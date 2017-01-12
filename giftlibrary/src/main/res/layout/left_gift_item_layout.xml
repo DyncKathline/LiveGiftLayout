@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/infoRl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_giftlayout">
+
+        <ImageView
+            android:id="@+id/headIv"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ember" />
+
+        <TextView
+            android:id="@+id/nickNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/headIv"
+            android:text="nickName"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/infoTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/nickNameTv"
+            android:layout_below="@id/nickNameTv"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:text="送了一个+U鹿"
+            android:textColor="#ffea79"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/giftIv"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/infoTv"
+            android:background="@mipmap/diamond2x" />
+    </RelativeLayout>
+
+    <org.dync.giftlibrary.widget.NumberTextView
+        android:id="@+id/numberImgTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/infoRl" />
+</RelativeLayout>

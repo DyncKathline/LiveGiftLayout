@@ -1,1 +1,1 @@
-include ':app', ':giflibrary'
+include ':app', ':giftlibrary'
