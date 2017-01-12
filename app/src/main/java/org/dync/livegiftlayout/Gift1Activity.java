@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,15 +11,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.dync.giflibrary.adapter.FaceGVAdapter;
-import org.dync.giflibrary.adapter.FaceVPAdapter;
-import org.dync.giflibrary.util.ExpressionUtil;
-import org.dync.giflibrary.widget.Viewpager;
-import org.dync.giflibrary.widget.GiftControl;
-import org.dync.giflibrary.widget.GiftFrameLayout;
-import org.dync.giflibrary.widget.GiftModel;
+import org.dync.giftlibrary.adapter.FaceGVAdapter;
+import org.dync.giftlibrary.adapter.FaceVPAdapter;
+import org.dync.giftlibrary.util.ExpressionUtil;
+import org.dync.giftlibrary.widget.GiftControl;
+import org.dync.giftlibrary.widget.GiftFrameLayout;
+import org.dync.giftlibrary.widget.GiftModel;
+import org.dync.giftlibrary.widget.Viewpager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,7 @@ public class Gift1Activity extends AppCompatActivity {
     private LinearLayout giftLayout;
     private LinearLayout ll_portrait;
     private LinearLayout ll_landscape;
+    private TextView tvGiftNum;
     private ImageView btnGift;
     private Viewpager mViewpager;
     private LinearLayout mDotsLayout;
@@ -47,38 +48,39 @@ public class Gift1Activity extends AppCompatActivity {
     private ExpressionUtil expressionUtil;
     private List<String> staticFacesList;
     private GiftControl giftControl;
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift1);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         giftFrameLayout1 = (GiftFrameLayout) findViewById(R.id.gift_layout1);
         giftFrameLayout2 = (GiftFrameLayout) findViewById(R.id.gift_layout2);
 
-        ll_portrait = (LinearLayout) findViewById(R.id.ll_portrait);
-        ll_landscape = (LinearLayout) findViewById(R.id.ll_landscape);
-        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        giftLayout = (LinearLayout) findViewById(R.id.giftLayout);
-        btnGift = (ImageView) findViewById(R.id.toolbox_iv_face);
-
-        rvGift = (RecyclerView) findViewById(R.id.rv_gift);
-        mViewpager = (Viewpager) findViewById(R.id.toolbox_pagers_face);
-        mDotsLayout = (LinearLayout) findViewById(R.id.face_dots_container);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        initGiftLayout();
 
         giftControl = new GiftControl(Gift1Activity.this);
-        giftControl.setGiftLayout(0, giftFrameLayout1, 1, giftFrameLayout2);
+        giftControl.setGiftLayout(giftFrameLayout1, giftFrameLayout2);
+        tvGiftNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                showGiftDialog();
+            }
+        });
         btnGift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(giftstr)) {
                     Toast.makeText(getApplication(), "你还没选择礼物呢", Toast.LENGTH_SHORT).show();
                 } else {
-                    giftControl.loadGift(new GiftModel(giftstr, "安卓机器人", 1, "http://www.baidu.com", "123", "Lee123", "http://www.baidu.com"));
+                    String numStr = tvGiftNum.getText().toString();
+                    if (!TextUtils.isEmpty(numStr)) {
+                        int giftnum = Integer.parseInt(numStr);
+                        if (giftnum == 0) {
+                            return;
+                        } else {
+                            giftControl.loadGift(new GiftModel(giftstr, "安卓机器人", giftnum, "http://www.baidu.com", "123", "Lee123", "http://www.baidu.com"));
+                        }
+                    }
                 }
             }
         });
@@ -92,6 +94,19 @@ public class Gift1Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void initGiftLayout() {
+        ll_portrait = (LinearLayout) findViewById(R.id.ll_portrait);
+        ll_landscape = (LinearLayout) findViewById(R.id.ll_landscape);
+        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        giftLayout = (LinearLayout) findViewById(R.id.giftLayout);
+        tvGiftNum = (TextView) findViewById(R.id.toolbox_tv_gift_num);
+        btnGift = (ImageView) findViewById(R.id.toolbox_iv_face);
+
+        rvGift = (RecyclerView) findViewById(R.id.rv_gift);
+        mViewpager = (Viewpager) findViewById(R.id.toolbox_pagers_face);
+        mDotsLayout = (LinearLayout) findViewById(R.id.face_dots_container);
 
         mViewpager.addOnPageChangeListener(new PageChange());
         initViewPager();
@@ -101,7 +116,19 @@ public class Gift1Activity extends AppCompatActivity {
         giftLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //这里的作用是消费掉点击事件
+            }
+        });
+    }
 
+    private void showGiftDialog() {
+        final GiftDialogFrament giftDialogFrament = new GiftDialogFrament();
+        giftDialogFrament.show(getFragmentManager(), "GiftDialogFrament");
+        giftDialogFrament.setGiftListener(new GiftDialogFrament.GiftListener() {
+            @Override
+            public void giftNum(String giftNum) {
+                tvGiftNum.setText(giftNum);
+                giftDialogFrament.dismiss();
             }
         });
     }

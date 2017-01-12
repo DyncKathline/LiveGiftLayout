@@ -28,5 +28,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:percent:24.2.1'
-    compile project(':giflibrary')
+    compile project(':giftlibrary')
 }

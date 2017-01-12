@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.dync.giflibrary.adapter.FaceGVAdapter;
-import org.dync.giflibrary.adapter.FaceVPAdapter;
-import org.dync.giflibrary.util.ExpressionUtil;
-import org.dync.giflibrary.widget.GiftModel;
-import org.dync.giflibrary.widget.LeftGiftControl;
-import org.dync.giflibrary.widget.LeftGiftsItemLayout;
-import org.dync.giflibrary.widget.Viewpager;
+import org.dync.giftlibrary.adapter.FaceGVAdapter;
+import org.dync.giftlibrary.adapter.FaceVPAdapter;
+import org.dync.giftlibrary.util.ExpressionUtil;
+import org.dync.giftlibrary.widget.GiftModel;
+import org.dync.giftlibrary.widget.LeftGiftControl;
+import org.dync.giftlibrary.widget.LeftGiftsItemLayout;
+import org.dync.giftlibrary.widget.Viewpager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,28 +71,6 @@ public class Gift2Activity extends AppCompatActivity {
 
         leftGiftControl = new LeftGiftControl(this);
         leftGiftControl.setGiftsLayout(gift1, gift2);
-
-        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leftGiftControl.loadGift(GiftModel.create("125", "安卓机器人", 3, "http://www.baidu.com", "123", "Lee125", "http://www.baidu.com"));
-            }
-        });
-
-        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leftGiftControl.loadGift(GiftModel.create("123", "安卓机器人", 1, "http://www.baidu.com", "123", "Lee123", "http://www.baidu.com"));
-            }
-        });
-
-        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leftGiftControl.loadGift(GiftModel.create("124", "安卓机器人", 1314, "http://www.baidu.com", "123", "Lee124", "http://www.baidu.com"));
-
-            }
-        });
     }
 
     private void initGiftLayout() {
