@@ -46,6 +46,12 @@ public class GiftPanelControl {
         giftListener = listener;
     }
 
+    /**
+     * @param context
+     * @param viewPager    竖屏礼物面板的ViewPager
+     * @param recyclerView 横屏礼物面板的RecycleView
+     * @param dotsLayout   竖屏礼物面板的小圆点父布局
+     */
     public GiftPanelControl(Context context, ViewPager viewPager, RecyclerView recyclerView, LinearLayout dotsLayout){
         mContext = context;
         inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -162,8 +168,8 @@ public class GiftPanelControl {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            //CustormViewPager.SCROLL_STATE_IDLE 空闲状态 0；CustormViewPager.SCROLL_STATE_DRAGGING 正在滑动 1
-            //CustormViewPager.SCROLL_STATE_SETTLING 滑动完毕 2；页面开始滑动时，状态变化（1,2,0）
+            //ViewPager.SCROLL_STATE_IDLE 空闲状态 0；CustormViewPager.SCROLL_STATE_DRAGGING 正在滑动 1
+            //ViewPager.SCROLL_STATE_SETTLING 滑动完毕 2；页面开始滑动时，状态变化（1,2,0）
             if (state == ViewPager.SCROLL_STATE_DRAGGING) {
                 isScrolling = true;
             } else {
