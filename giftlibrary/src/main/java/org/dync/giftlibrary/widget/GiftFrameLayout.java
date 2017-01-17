@@ -147,7 +147,6 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 mCombo++;
                 anim_num.setText("x " + (mCombo));
                 comboAnimation();
-                stopCheckGiftCount();
                 removeDismissGiftCallback();
                 break;
             default:
@@ -167,10 +166,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     private void removeDismissGiftCallback() {
+        stopCheckGiftCount();
         if (mCurrentAnimRunnable != null) {
             mHandler.removeCallbacks(mCurrentAnimRunnable);
             mCurrentAnimRunnable = null;
-            stopCheckGiftCount();
         }
     }
 
@@ -251,6 +250,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         mGiftCount += count;
     }
 
+    public int getGiftCount(){
+        return mGiftCount;
+    }
+
     private void checkGiftCountSubscribe() {
         if (mSubscribe == null || mSubscribe.isUnsubscribed()) {
             mSubscribe = Observable.interval(300, TimeUnit.MILLISECONDS).map(new Func1<Long, Void>() {
@@ -276,6 +279,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
             mSubscribe.unsubscribe();
         }
+    }
+
+    public void clearHandler(){
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     public AnimatorSet startAnimation() {

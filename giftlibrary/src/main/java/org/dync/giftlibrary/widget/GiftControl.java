@@ -139,6 +139,18 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         return gift;
     }
 
+    public int getCurGiftCount(String giftId, String userName) {
+        int curGiftCount = -1;
+        GiftModel firstGift = mFirstItemGift.mGift;
+        GiftModel secondGift = mSecondItemGift.mGift;
+        if (firstGift != null && firstGift.getGiftId().equals(giftId) && firstGift.getSendUserName().equals(userName)) {
+            curGiftCount = mFirstItemGift.getGiftCount();
+        } else if (secondGift != null && secondGift.getGiftId().equals(giftId) && secondGift.getSendUserName().equals(userName)) {
+            curGiftCount = mSecondItemGift.getGiftCount();
+        }
+        return curGiftCount;
+    }
+
     @Override
     public void dismiss(int index) {
         Log.i(TAG, "dismiss: index = " + index);
@@ -167,6 +179,12 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     public synchronized void cleanAll() {
         if (mGiftQueue != null) {
             mGiftQueue.clear();
+        }
+        if (mFirstItemGift != null){
+            mFirstItemGift.clearHandler();
+        }
+        if (mSecondItemGift != null){
+            mSecondItemGift.clearHandler();
         }
     }
 

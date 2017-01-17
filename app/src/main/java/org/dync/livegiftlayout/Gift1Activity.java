@@ -2,6 +2,7 @@ package org.dync.livegiftlayout;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,7 +17,6 @@ import org.dync.giftlibrary.util.GiftPanelControl;
 import org.dync.giftlibrary.widget.GiftControl;
 import org.dync.giftlibrary.widget.GiftFrameLayout;
 import org.dync.giftlibrary.widget.GiftModel;
-import org.dync.giftlibrary.widget.Viewpager;
 
 public class Gift1Activity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class Gift1Activity extends AppCompatActivity {
     private LinearLayout ll_landscape;
     private TextView tvGiftNum;
     private ImageView btnGift;
-    private Viewpager mViewpager;
+    private ViewPager mViewpager;
     private LinearLayout mDotsLayout;
 
     private String giftstr = "";
@@ -44,6 +44,13 @@ public class Gift1Activity extends AppCompatActivity {
 
         initGiftLayout();
 
+        GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
+        giftPanelControl.setGiftListener(new GiftPanelControl.GiftListener() {
+            @Override
+            public void getGiftStr(String giftStr) {
+                giftstr = giftStr;
+            }
+        });
         giftControl = new GiftControl(Gift1Activity.this);
         giftControl.setGiftLayout(giftFrameLayout1, giftFrameLayout2);
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
@@ -90,21 +97,13 @@ public class Gift1Activity extends AppCompatActivity {
         btnGift = (ImageView) findViewById(R.id.toolbox_iv_face);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_gift);
-        mViewpager = (Viewpager) findViewById(R.id.toolbox_pagers_face);
+        mViewpager = (ViewPager) findViewById(R.id.toolbox_pagers_face);
         mDotsLayout = (LinearLayout) findViewById(R.id.face_dots_container);
 
         giftLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //这里的作用是消费掉点击事件
-            }
-        });
-
-        GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
-        giftPanelControl.setGiftListener(new GiftPanelControl.GiftListener() {
-            @Override
-            public void getGiftStr(String giftStr) {
-                giftstr = giftStr;
             }
         });
     }

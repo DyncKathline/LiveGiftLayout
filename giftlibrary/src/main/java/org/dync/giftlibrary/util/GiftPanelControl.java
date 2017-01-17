@@ -63,11 +63,14 @@ public class GiftPanelControl {
     }
 
     private void init() {
-        initGiftView();
-        initViewPager();
+        initPortraitGift();
+        intitLandscapeGift();
     }
 
-    private void initGiftView() {
+    /**
+     * 初始化礼物面板，横屏时显示
+     */
+    private void intitLandscapeGift() {
         if (expressionUtil == null) {
             expressionUtil = new ExpressionUtil();
         }
@@ -79,9 +82,9 @@ public class GiftPanelControl {
     }
 
     /**
-     * 初始化礼物面板
+     * 初始化礼物面板，竖屏时显示
      */
-    private void initViewPager() {
+    private void initPortraitGift() {
         expressionUtil = new ExpressionUtil();
         mDatas = expressionUtil.initStaticFaces(mContext);
         int pagesize = expressionUtil.getPagerCount(mDatas.size(), columns, rows);
@@ -90,13 +93,22 @@ public class GiftPanelControl {
             views.add(expressionUtil.viewPagerItem(mContext, i, mDatas, columns, rows, null));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(16, 16);
             params.setMargins(10, 0, 10, 0);
-            mDotsLayout.addView(dotsItem(i), params);
+            if (pagesize > 1) {
+                mDotsLayout.addView(dotsItem(i), params);
+            }
+        }
+        if (pagesize > 1) {
+            mDotsLayout.setVisibility(View.VISIBLE);
+        } else {
+            mDotsLayout.setVisibility(View.GONE);
         }
         FaceVPAdapter mVpAdapter = new FaceVPAdapter(views);
         mViewpager.setAdapter(mVpAdapter);
+        mViewpager.setOnPageChangeListener(new PageChange());
         mViewpager.setCurrentItem(0);
-        mViewpager.addOnPageChangeListener(new PageChange());
-        mDotsLayout.getChildAt(0).setSelected(true);
+        if (pagesize > 1) {
+            mDotsLayout.getChildAt(0).setSelected(true);
+        }
 
         expressionUtil.setGiftClickListener(new ExpressionUtil.GiftClickListener() {
             @Override
