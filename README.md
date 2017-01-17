@@ -1,4 +1,4 @@
-交流群：611902811，有兴趣的可以交流
+交流群：611902811，有兴趣的可以交流  
 首先先上图  
 ![image](https://github.com/DyncKathline/LiveGiftLayout/blob/master/screenshot/GIF.gif)  
 ### 1：到[GitHub](https://github.com/DyncKathline/LiveGiftLayout) 把项目clone到本地。  
