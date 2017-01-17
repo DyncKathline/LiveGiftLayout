@@ -49,7 +49,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     }
 
     public void loadGift(GiftModel gift){
-        loadGift(gift, false);
+        loadGift(gift, true);
     }
     /**
      * 加入礼物，具有实时连击效果

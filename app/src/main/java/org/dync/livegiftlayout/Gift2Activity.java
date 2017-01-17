@@ -1,6 +1,7 @@
 package org.dync.livegiftlayout;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -13,7 +14,6 @@ import org.dync.giftlibrary.util.GiftPanelControl;
 import org.dync.giftlibrary.widget.GiftModel;
 import org.dync.giftlibrary.widget.LeftGiftControl;
 import org.dync.giftlibrary.widget.LeftGiftsItemLayout;
-import org.dync.giftlibrary.widget.Viewpager;
 
 
 public class Gift2Activity extends AppCompatActivity {
@@ -30,7 +30,7 @@ public class Gift2Activity extends AppCompatActivity {
     private LinearLayout ll_portrait;
     private LinearLayout ll_landscape;
     private ImageView btnGift;
-    private Viewpager mViewPager;
+    private ViewPager mViewPager;
     private LinearLayout mDotsLayout;
 
     private LeftGiftControl leftGiftControl;
@@ -66,7 +66,7 @@ public class Gift2Activity extends AppCompatActivity {
         btnGift = (ImageView) findViewById(R.id.toolbox_iv_face);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_gift);
-        mViewPager = (Viewpager) findViewById(R.id.toolbox_pagers_face);
+        mViewPager = (ViewPager) findViewById(R.id.toolbox_pagers_face);
         mDotsLayout = (LinearLayout) findViewById(R.id.face_dots_container);
 
         btnGift.setOnClickListener(new View.OnClickListener() {
