@@ -98,12 +98,12 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 } else {
                     Log.i(TAG, "addGiftQueue: ---------------");
                     mGiftQueue.add(gift);
+                    break;
                 }
             }
         }else {
             mGiftQueue.add(gift);
         }
-        showGift();
     }
 
     /**

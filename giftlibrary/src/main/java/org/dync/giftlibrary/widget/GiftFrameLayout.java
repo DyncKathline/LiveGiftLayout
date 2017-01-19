@@ -136,7 +136,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             anim_nickname.setText(gift.getSendUserName());
         }
         if (!TextUtils.isEmpty(gift.getGiftId())) {
-            anim_sign.setText(gift.getGiftId());
+            anim_sign.setText(gift.getGiftName());
         }
     }
 
