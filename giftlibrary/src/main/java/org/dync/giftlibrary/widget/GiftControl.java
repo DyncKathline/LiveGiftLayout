@@ -48,9 +48,10 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         mSecondItemGift.setGiftAnimationListener(this);
     }
 
-    public void loadGift(GiftModel gift){
+    public void loadGift(GiftModel gift) {
         loadGift(gift, true);
     }
+
     /**
      * 加入礼物，具有实时连击效果
      *
@@ -59,7 +60,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
      */
     public void loadGift(GiftModel gift, boolean supportCombo) {
         if (mGiftQueue != null) {
-            if (supportCombo){
+            if (supportCombo) {
                 if (mFirstItemGift.isShowing()) {
                     if (mFirstItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mFirstItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
@@ -90,18 +91,22 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             }
         }
         Log.i(TAG, "addGiftQueue: " + mGiftQueue.size());
-        if (supportCombo){
+        if (supportCombo) {
+            boolean addflag = false;
             for (GiftModel model : mGiftQueue) {
                 if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
-                    Log.i(TAG, "addGiftQueue: ===============");
+                    Log.i(TAG, "addGiftQueue: ===============" + gift.getGiftId());
                     model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
-                } else {
-                    Log.i(TAG, "addGiftQueue: ---------------");
-                    mGiftQueue.add(gift);
+                    addflag = true;
                     break;
                 }
             }
-        }else {
+            //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
+            if (!addflag) {
+                Log.i(TAG, "addGiftQueue: ---------------" + gift.getGiftId());
+                mGiftQueue.add(gift);
+            }
+        } else {
             mGiftQueue.add(gift);
         }
     }
@@ -180,10 +185,10 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (mGiftQueue != null) {
             mGiftQueue.clear();
         }
-        if (mFirstItemGift != null){
+        if (mFirstItemGift != null) {
             mFirstItemGift.clearHandler();
         }
-        if (mSecondItemGift != null){
+        if (mSecondItemGift != null) {
             mSecondItemGift.clearHandler();
         }
     }

@@ -43,6 +43,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     private static final String TAG = "GiftFrameLayout";
     private LayoutInflater mInflater;
+    private Context mContext;
     private Handler mHandler = new Handler(this);
     private static final int RESTART_GIFT_ANIMATION_CODE = 1002;
     /**
@@ -86,6 +87,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     public GiftFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = LayoutInflater.from(context);
+        mContext = context;
     }
 
     @Override
