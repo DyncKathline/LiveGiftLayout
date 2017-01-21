@@ -2,7 +2,6 @@ package org.dync.livegiftlayout;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,6 @@ public class GiftMsgAdapter extends RecyclerView.Adapter<GiftMsgAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         String item = mDatas.get(position);
         holder.tvGiftMsg.setText("送了礼物" + item);
-        Log.e(TAG, "送了礼物" + item);
     }
 
     @Override
