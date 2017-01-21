@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -34,6 +35,8 @@ public class Gift1Activity extends AppCompatActivity {
     private String giftstr = "";
     private RecyclerView mRecyclerView;
     private GiftControl giftControl;
+    private RecyclerView recyclerView;
+    private GiftMsgAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class Gift1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_gift1);
         giftFrameLayout1 = (GiftFrameLayout) findViewById(R.id.gift_layout1);
         giftFrameLayout2 = (GiftFrameLayout) findViewById(R.id.gift_layout2);
+
+        showGiftMsgList();
 
         initGiftLayout();
 
@@ -72,6 +77,7 @@ public class Gift1Activity extends AppCompatActivity {
                             return;
                         } else {
                             giftControl.loadGift(new GiftModel(giftstr, "安卓机器人", giftnum, "http://www.baidu.com", "123", "Lee123", "http://www.baidu.com"));
+                            adapter.add(giftstr);
                         }
                     }
                 }
@@ -87,6 +93,13 @@ public class Gift1Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void showGiftMsgList() {
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new GiftMsgAdapter(this);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initGiftLayout() {

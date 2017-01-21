@@ -64,6 +64,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mFirstItemGift.isShowing()) {
                     if (mFirstItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mFirstItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
+                        Log.i(TAG, "addGiftQueue: ================礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
                         mFirstItemGift.setGiftCount(gift.getGiftCuont());
                         return;
                     }
@@ -72,6 +73,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mSecondItemGift.isShowing()) {
                     if (mSecondItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mSecondItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
+                        Log.i(TAG, "addGiftQueue: ========连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
                         mSecondItemGift.setGiftCount(gift.getGiftCuont());
                         return;
                     }
@@ -85,17 +87,18 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     private void addGiftQueue(GiftModel gift, boolean supportCombo) {
         if (mGiftQueue != null) {
             if (mGiftQueue.size() == 0) {
+                Log.d(TAG, "addGiftQueue---集合个数：" + mGiftQueue.size() + ",礼物：" + gift.getGiftId());
                 mGiftQueue.add(gift);
                 showGift();
                 return;
             }
         }
-        Log.i(TAG, "addGiftQueue: " + mGiftQueue.size());
+        Log.d(TAG, "addGiftQueue---集合个数：" + mGiftQueue.size() + ",礼物：" + gift.getGiftId());
         if (supportCombo) {
             boolean addflag = false;
             for (GiftModel model : mGiftQueue) {
                 if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
-                    Log.i(TAG, "addGiftQueue: ===============" + gift.getGiftId());
+                    Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
                     model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
                     addflag = true;
                     break;
@@ -103,7 +106,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             }
             //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
             if (!addflag) {
-                Log.i(TAG, "addGiftQueue: ---------------" + gift.getGiftId());
+                Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
                 mGiftQueue.add(gift);
             }
         } else {
@@ -118,15 +121,20 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (isEmpty()) {
             return;
         }
-        Log.i(TAG, "showGift: begin->" + mGiftQueue.size());
+        Log.d(TAG, "showGift: begin->集合个数：" + mGiftQueue.size());
         if (!mFirstItemGift.isShowing()) {
-            mFirstItemGift.setGift(getGift());
-            mFirstItemGift.startAnimation();
-        } else if (!mSecondItemGift.isShowing()) {
-            mSecondItemGift.setGift(getGift());
-            mSecondItemGift.startAnimation();
+            boolean hasGift = mFirstItemGift.setGift(getGift());
+            if (hasGift) {
+                mFirstItemGift.startAnimation();
+            }
         }
-        Log.i(TAG, "showGift: end->" + mGiftQueue.size());
+        if (!mSecondItemGift.isShowing()) {
+            boolean hasGift = mSecondItemGift.setGift(getGift());
+            if (hasGift) {
+                mSecondItemGift.startAnimation();
+            }
+        }
+        Log.d(TAG, "showGift: end->集合个数：" + mGiftQueue.size());
     }
 
     /**
@@ -139,7 +147,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (mGiftQueue.size() != 0) {
             gift = mGiftQueue.get(0);
             mGiftQueue.remove(0);
-            Log.i(TAG, "getGift: " + mGiftQueue.size());
+            Log.i(TAG, "getGift---集合个数：" + mGiftQueue.size() + ",送出礼物---" + gift.getGiftId() + ",礼物数X" + gift.getGiftCuont());
         }
         return gift;
     }
@@ -158,19 +166,19 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     @Override
     public void dismiss(int index) {
-        Log.i(TAG, "dismiss: index = " + index);
         if (index == 0) {
-            reStartAnimation(mFirstItemGift.endAnmation(), mFirstItemGift);
+            reStartAnimation(mFirstItemGift.endAnmation(), mFirstItemGift, index);
         } else if (index == 1) {
-            reStartAnimation(mSecondItemGift.endAnmation(), mSecondItemGift);
+            reStartAnimation(mSecondItemGift.endAnmation(), mSecondItemGift, index);
         }
     }
 
-    private void reStartAnimation(AnimatorSet animatorSet, final GiftFrameLayout giftFrameLayout) {
+    private void reStartAnimation(AnimatorSet animatorSet, final GiftFrameLayout giftFrameLayout, final int index) {
         if (animatorSet != null) {
             animatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    Log.i(TAG, "礼物动画dismiss: index = " + index);
                     giftFrameLayout.setCurrentShowStatus(false);
                     showGift();
                 }

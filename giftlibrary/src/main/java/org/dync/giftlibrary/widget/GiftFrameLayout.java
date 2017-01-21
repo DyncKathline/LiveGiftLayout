@@ -126,9 +126,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         anim_num.setVisibility(INVISIBLE);
     }
 
-    public void setGift(GiftModel gift) {
+    public boolean setGift(GiftModel gift) {
         if (gift == null) {
-            return;
+            return false;
         }
         mGift = gift;
         if (0 != gift.getGiftCuont()) {
@@ -140,6 +140,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         if (!TextUtils.isEmpty(gift.getGiftId())) {
             anim_sign.setText(gift.getGiftName());
         }
+        return true;
     }
 
     @Override

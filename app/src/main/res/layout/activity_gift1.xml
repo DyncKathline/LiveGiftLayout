@@ -26,6 +26,12 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="300dp"/>
+
     <Button
         android:id="@+id/action"
         android:layout_width="wrap_content"
