@@ -6,20 +6,14 @@ package org.dync.giftlibrary.widget;
 public class GiftModel {
 
     private String giftId;
-
     private String giftName;
-
     private int giftCuont;
-
     private String giftPic;
-
     private String sendUserId;
-
     private String sendUserName;
-
     private String sendUserPic;
-
     private String hitCombo;
+    private Long sendGiftTime;
 
     public static GiftModel create(String giftId, String giftName, int giftCont, String giftPic, String sendUserId,
                                    String sendUserName, String sendUserPic) {
@@ -38,7 +32,7 @@ public class GiftModel {
     }
 
     public GiftModel(String giftId, String giftName, int giftCont, String giftPic, String sendUserId,
-                     String sendUserName, String sendUserPic) {
+                     String sendUserName, String sendUserPic, Long sendGiftTime) {
         setGiftId(giftId);
         setGiftName(giftName);
         setGiftCuont(giftCont);
@@ -46,6 +40,7 @@ public class GiftModel {
         setSendUserId(sendUserId);
         setSendUserName(sendUserName);
         setSendUserPic(sendUserPic);
+        setSendGiftTime(sendGiftTime);
     }
 
     public GiftModel(String giftId, String sendUserName, String sendUserPic, int giftCont) {
@@ -117,5 +112,13 @@ public class GiftModel {
 
     public void setHitCombo(String hitCombo) {
         this.hitCombo = hitCombo;
+    }
+
+    public Long getSendGiftTime() {
+        return sendGiftTime;
+    }
+
+    public void setSendGiftTime(Long sendGiftTime) {
+        this.sendGiftTime = sendGiftTime;
     }
 }

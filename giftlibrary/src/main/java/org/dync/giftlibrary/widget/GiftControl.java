@@ -64,8 +64,9 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mFirstItemGift.isShowing()) {
                     if (mFirstItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mFirstItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
-                        Log.i(TAG, "addGiftQueue: ================礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
+                        Log.i(TAG, "addGiftQueue: ========连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
                         mFirstItemGift.setGiftCount(gift.getGiftCuont());
+                        mFirstItemGift.setSendGiftTime(gift.getSendGiftTime());
                         return;
                     }
                 }
@@ -75,6 +76,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                         //连击
                         Log.i(TAG, "addGiftQueue: ========连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
                         mSecondItemGift.setGiftCount(gift.getGiftCuont());
+                        mSecondItemGift.setSendGiftTime(gift.getSendGiftTime());
                         return;
                     }
                 }
@@ -98,6 +100,10 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             boolean addflag = false;
             for (GiftModel model : mGiftQueue) {
                 if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
+//                    long tiggerTime = gift.getSendGiftTime() - model.getSendGiftTime();
+//                    Log.i(TAG, "addGiftQueue: 触发连击的时间间隔：" + tiggerTime);
+//                    if (tiggerTime < GIFT_DISMISS_TIME) {
+//                    }
                     Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
                     model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
                     addflag = true;
@@ -154,8 +160,8 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     public int getCurGiftCount(String giftId, String userName) {
         int curGiftCount = -1;
-        GiftModel firstGift = mFirstItemGift.mGift;
-        GiftModel secondGift = mSecondItemGift.mGift;
+        GiftModel firstGift = mFirstItemGift.getGift();
+        GiftModel secondGift = mSecondItemGift.getGift();
         if (firstGift != null && firstGift.getGiftId().equals(giftId) && firstGift.getSendUserName().equals(userName)) {
             curGiftCount = mFirstItemGift.getGiftCount();
         } else if (secondGift != null && secondGift.getGiftId().equals(giftId) && secondGift.getSendUserName().equals(userName)) {

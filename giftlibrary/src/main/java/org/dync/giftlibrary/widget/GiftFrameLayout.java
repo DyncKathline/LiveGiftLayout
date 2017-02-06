@@ -60,7 +60,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     TextView anim_nickname, anim_sign;
     StrokeTextView anim_num;
 
-    GiftModel mGift;
+    private GiftModel mGift;
     /**
      * item 显示位置
      */
@@ -141,6 +141,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             anim_sign.setText(gift.getGiftName());
         }
         return true;
+    }
+
+    public GiftModel getGift(){
+        return mGift;
     }
 
     @Override
@@ -251,10 +255,19 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      */
     public synchronized void setGiftCount(int count) {
         mGiftCount += count;
+        mGift.setGiftCuont(mGiftCount);
     }
 
     public int getGiftCount(){
         return mGiftCount;
+    }
+
+    public synchronized void setSendGiftTime(long sendGiftTime){
+        mGift.setSendGiftTime(sendGiftTime);
+    }
+
+    public long getSendGiftTime(){
+        return mGift.getSendGiftTime();
     }
 
     private void checkGiftCountSubscribe() {
