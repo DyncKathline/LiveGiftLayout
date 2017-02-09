@@ -1,7 +1,8 @@
-交流群：611902811，有兴趣的可以交流  
+QQ交流群：611902811，有兴趣的可以交流  
 首先先上图  
 ![image](https://github.com/DyncKathline/LiveGiftLayout/blob/master/screenshot/GIF.gif)  
-### 1：到[GitHub](https://github.com/DyncKathline/LiveGiftLayout) 把项目clone到本地。  
+### 个人建议使用Gift1Activity项目中的库，Gift2Activity项目中的库后面不怎么维护了  
+### 1：到[GitHub](https://github.com/DyncKathline/LiveGiftLayout) 把项目clone到本地。  
 ### 2: 把giftlibrary库依赖到你的项目中去  
 ### 3：在你要显示的xml文件中添加展示礼物和礼物面板的地方 以项目中的activity_gift1.xml为例
 ```
