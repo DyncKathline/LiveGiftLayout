@@ -100,10 +100,6 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             boolean addflag = false;
             for (GiftModel model : mGiftQueue) {
                 if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
-//                    long tiggerTime = gift.getSendGiftTime() - model.getSendGiftTime();
-//                    Log.i(TAG, "addGiftQueue: 触发连击的时间间隔：" + tiggerTime);
-//                    if (tiggerTime < GIFT_DISMISS_TIME) {
-//                    }
                     Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
                     model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
                     addflag = true;
@@ -173,16 +169,17 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     @Override
     public void dismiss(int index) {
         if (index == 0) {
-            reStartAnimation(mFirstItemGift.endAnmation(), mFirstItemGift, index);
+            reStartAnimation(mFirstItemGift, index);
         } else if (index == 1) {
-            reStartAnimation(mSecondItemGift.endAnmation(), mSecondItemGift, index);
+            reStartAnimation(mSecondItemGift, index);
         }
     }
 
-    private void reStartAnimation(AnimatorSet animatorSet, final GiftFrameLayout giftFrameLayout, final int index) {
+    private void reStartAnimation(final GiftFrameLayout giftFrameLayout, final int index) {
+        //动画结束，这时不能触发连击动画
+        giftFrameLayout.setCurrentShowStatus(false);
+        AnimatorSet animatorSet = giftFrameLayout.endAnmation();
         if (animatorSet != null) {
-            //动画结束，这是不能触发连击动画
-            giftFrameLayout.setCurrentShowStatus(false);
             animatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
