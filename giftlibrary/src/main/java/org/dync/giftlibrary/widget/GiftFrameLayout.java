@@ -77,7 +77,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * 实时监测礼物数量
      */
     private Subscription mSubscribe;
+    /**
+     * 礼物动画正在显示，在这期间可触发连击效果
+     */
     private boolean isShowing = false;
+    /**
+     * 礼物动画结束
+     */
+    private boolean isEnd = true;
     private LeftGiftAnimationStatusListener mGiftAnimationListener;
 
     public GiftFrameLayout(Context context) {
@@ -224,6 +231,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         isShowing = status;
     }
 
+    public boolean isEnd(){
+        return isEnd;
+    }
+
+    public void CurrentEndStatus(boolean isEnd){
+        this.isEnd = isEnd;
+    }
+
     /**
      * 获取当前显示礼物发送人id
      *
@@ -312,6 +327,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 GiftFrameLayout.this.setVisibility(View.VISIBLE);
                 GiftFrameLayout.this.setAlpha(1f);
                 isShowing = true;
+                isEnd = false;
                 anim_num.setText("x " + mCombo);
             }
         });
@@ -370,7 +386,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     public AnimatorSet endAnmation() {
         //向上渐变消失
-        ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 0, -100, 300, 400);
+        ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 0, -100, 500, 0);
         fadeAnimator.addListener(new AnimatorListenerAdapter() {
 
             @Override
@@ -380,7 +396,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             }
         });
         // 复原
-        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 100, 0, 20, 0);
+        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 100, 0, 0, 0);
 
         AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(fadeAnimator, fadeAnimator2);
         return animatorSet;

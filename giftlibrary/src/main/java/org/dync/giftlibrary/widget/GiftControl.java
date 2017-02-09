@@ -128,13 +128,13 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             return;
         }
         Log.d(TAG, "showGift: begin->集合个数：" + mGiftQueue.size());
-        if (!mFirstItemGift.isShowing()) {
+        if (!mFirstItemGift.isShowing() && mFirstItemGift.isEnd()) {
             boolean hasGift = mFirstItemGift.setGift(getGift());
             if (hasGift) {
                 mFirstItemGift.startAnimation();
             }
         }
-        if (!mSecondItemGift.isShowing()) {
+        if (!mSecondItemGift.isShowing() && mSecondItemGift.isEnd()) {
             boolean hasGift = mSecondItemGift.setGift(getGift());
             if (hasGift) {
                 mSecondItemGift.startAnimation();
@@ -181,11 +181,14 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     private void reStartAnimation(AnimatorSet animatorSet, final GiftFrameLayout giftFrameLayout, final int index) {
         if (animatorSet != null) {
+            //动画结束，这是不能触发连击动画
+            giftFrameLayout.setCurrentShowStatus(false);
             animatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     Log.i(TAG, "礼物动画dismiss: index = " + index);
-                    giftFrameLayout.setCurrentShowStatus(false);
+                    //动画完全结束
+                    giftFrameLayout.CurrentEndStatus(true);
                     showGift();
                 }
             });
