@@ -201,9 +201,11 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         }
         if (mFirstItemGift != null) {
             mFirstItemGift.clearHandler();
+            mFirstItemGift.stopCheckGiftCount();
         }
         if (mSecondItemGift != null) {
             mSecondItemGift.clearHandler();
+            mSecondItemGift.stopCheckGiftCount();
         }
     }
 

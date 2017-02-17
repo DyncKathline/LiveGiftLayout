@@ -306,7 +306,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         }
     }
 
-    private void stopCheckGiftCount() {
+    public void stopCheckGiftCount() {
         if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
             mSubscribe.unsubscribe();
         }
