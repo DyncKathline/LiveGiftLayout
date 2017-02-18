@@ -64,7 +64,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mFirstItemGift.isShowing()) {
                     if (mFirstItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mFirstItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
-                        Log.i(TAG, "addGiftQueue: ========连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
+                        Log.i(TAG, "addGiftQueue: ========mFirstItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
                         mFirstItemGift.setGiftCount(gift.getGiftCuont());
                         mFirstItemGift.setSendGiftTime(gift.getSendGiftTime());
                         return;
@@ -74,7 +74,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mSecondItemGift.isShowing()) {
                     if (mSecondItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mSecondItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
-                        Log.i(TAG, "addGiftQueue: ========连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
+                        Log.i(TAG, "addGiftQueue: ========mSecondItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
                         mSecondItemGift.setGiftCount(gift.getGiftCuont());
                         mSecondItemGift.setSendGiftTime(gift.getSendGiftTime());
                         return;
@@ -178,6 +178,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     private void reStartAnimation(final GiftFrameLayout giftFrameLayout, final int index) {
         //动画结束，这时不能触发连击动画
         giftFrameLayout.setCurrentShowStatus(false);
+        Log.d(TAG, "reStartAnimation: 动画结束");
         AnimatorSet animatorSet = giftFrameLayout.endAnmation();
         if (animatorSet != null) {
             animatorSet.addListener(new AnimatorListenerAdapter() {

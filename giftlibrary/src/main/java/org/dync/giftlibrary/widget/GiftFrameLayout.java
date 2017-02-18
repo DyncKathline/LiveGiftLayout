@@ -26,14 +26,8 @@ import android.widget.TextView;
 import org.dync.giftlibrary.R;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -50,6 +44,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * 礼物展示时间
      */
     public static final int GIFT_DISMISS_TIME = 3000;
+    private static final int INTERVAL = 299;
     /**
      * 当前动画runnable
      */
@@ -76,7 +71,8 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     /**
      * 实时监测礼物数量
      */
-    private Subscription mSubscribe;
+//    private Subscription mSubscribe;
+    private Timer mTimer;
     /**
      * 礼物动画正在显示，在这期间可触发连击效果
      */
@@ -150,7 +146,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         return true;
     }
 
-    public GiftModel getGift(){
+    public GiftModel getGift() {
         return mGift;
     }
 
@@ -173,10 +169,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * 显示完连击数与动画时,关闭此Item Layout,并通知外部隐藏自身(供内部调用)
      */
     private void dismissGiftLayout() {
+        removeDismissGiftCallback();
         if (mGiftAnimationListener != null) {
             mGiftAnimationListener.dismiss(mIndex);
         }
-        removeDismissGiftCallback();
     }
 
     private void removeDismissGiftCallback() {
@@ -231,11 +227,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         isShowing = status;
     }
 
-    public boolean isEnd(){
+    public boolean isEnd() {
         return isEnd;
     }
 
-    public void CurrentEndStatus(boolean isEnd){
+    public void CurrentEndStatus(boolean isEnd) {
         this.isEnd = isEnd;
     }
 
@@ -273,46 +269,75 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         mGift.setGiftCuont(mGiftCount);
     }
 
-    public int getGiftCount(){
+    public int getGiftCount() {
         return mGiftCount;
     }
 
-    public synchronized void setSendGiftTime(long sendGiftTime){
+    public synchronized void setSendGiftTime(long sendGiftTime) {
         mGift.setSendGiftTime(sendGiftTime);
     }
 
-    public long getSendGiftTime(){
+    public long getSendGiftTime() {
         return mGift.getSendGiftTime();
     }
 
+    /**
+     * <pre>
+     * 这里不能GIFT_DISMISS_TIME % INVISIBLE == 0,
+     * 因为余数为0的话，说明在这个时刻即执行了{@link GiftControl#reStartAnimation(GiftFrameLayout, int)}移除动画{@link #endAnmation()},也执行了检查监听连击动作。
+     * 这导致就会出现在礼物动画消失的一瞬间，点击连击会出现如下日志出现的情况（已经触发连击了，但是礼物的动画已经结束了）：
+     * 02-18 20:45:57.900 9060-9060/org.dync.livegiftlayout D/GiftControl: addGiftQueue---集合个数：0,礼物：p/000.png
+     * 02-18 20:45:57.900 9060-9060/org.dync.livegiftlayout D/GiftControl: showGift: begin->集合个数：1
+     * 02-18 20:45:57.900 9060-9060/org.dync.livegiftlayout I/GiftControl: getGift---集合个数：0,送出礼物---p/000.png,礼物数X1
+     * 02-18 20:45:57.910 9060-9060/org.dync.livegiftlayout D/GiftControl: showGift: end->集合个数：0
+     * 02-18 20:46:01.910 9060-9060/org.dync.livegiftlayout I/GiftControl: addGiftQueue: ========mFirstItemGift连击========礼物：p/000.png,连击X1
+     * 02-18 20:46:01.970 9060-9060/org.dync.livegiftlayout D/GiftControl: reStartAnimation: 动画结束
+     * 02-18 20:46:02.490 9060-9060/org.dync.livegiftlayout I/GiftControl: 礼物动画dismiss: index = 0
+     *
+     * </pre>
+     */
     private void checkGiftCountSubscribe() {
-        if (mSubscribe == null || mSubscribe.isUnsubscribed()) {
-            mSubscribe = Observable.interval(300, TimeUnit.MILLISECONDS).map(new Func1<Long, Void>() {
-                @Override
-                public Void call(Long aLong) {
-                    return null;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (mGiftCount > mCombo) {
+                    mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
                 }
-            }).subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Void>() {
-                        @Override
-                        public void call(Void aVoid) {
-                            if (mGiftCount > mCombo) {
-                                mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
-                            }
-                        }
-                    });
+            }
+        };
+        mTimer = new Timer();
+        mTimer.schedule(task, 0, INTERVAL);
 
-        }
+//        if (mSubscribe == null || mSubscribe.isUnsubscribed()) {
+//            mSubscribe = Observable.interval(INTERVAL, TimeUnit.MILLISECONDS).map(new Func1<Long, Void>() {
+//                @Override
+//                public Void call(Long aLong) {
+//                    return null;
+//                }
+//            }).subscribeOn(Schedulers.newThread())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Action1<Void>() {
+//                        @Override
+//                        public void call(Void aVoid) {
+//                            if (mGiftCount > mCombo) {
+//                                mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
+//                            }
+//                        }
+//                    });
+//
+//        }
     }
 
     public void stopCheckGiftCount() {
-        if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
-            mSubscribe.unsubscribe();
+        if (mTimer != null) {
+            mTimer.cancel();
         }
+//        if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
+//            mSubscribe.unsubscribe();
+//        }
     }
 
-    public void clearHandler(){
+    public void clearHandler() {
         mHandler.removeCallbacksAndMessages(null);
     }
 
@@ -375,9 +400,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 if (mGiftCount > mCombo) {//连击
                     mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
                 } else {
-                    checkGiftCountSubscribe();
                     mCurrentAnimRunnable = new GiftNumAnimaRunnable();
                     mHandler.postDelayed(mCurrentAnimRunnable, GIFT_DISMISS_TIME);
+                    checkGiftCountSubscribe();
                 }
             }
         });

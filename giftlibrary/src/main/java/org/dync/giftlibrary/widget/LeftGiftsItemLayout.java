@@ -24,14 +24,8 @@ import android.widget.Toast;
 import org.dync.giftlibrary.R;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by KathLine on 2017/1/8.
@@ -71,6 +65,7 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
      * 礼物展示时间
      */
     public static final int GIFT_DISMISS_TIME = 3000;
+    private static final int INTERVAL = 299;
 
     /**
      * 当前该layout显示状态
@@ -109,12 +104,14 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
     /**
      * 当前播放连击数
      */
-    private int mNum = 0;
+    private int mCombo = 0;
 
     /**
      * 实时监测礼物数量
      */
-    private Subscription mSubscribe;
+//    private Subscription mSubscribe;
+    private Timer mTimer;
+
     private RelativeLayout mInfoLl;
 
     public LeftGiftsItemLayout(Context context) {
@@ -176,7 +173,7 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
     public void setData(GiftModel data) {
         this.mGift = data;
         mGiftCount = this.mGift.getGiftCuont();
-        mNum = mGiftCount;
+        mCombo = mGiftCount;
         mNickNameTv.setText(this.mGift.getSendUserName());
         mInfoTv.setText("送了一个" + this.mGift.getGiftName());
 
@@ -188,7 +185,7 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
             e1.printStackTrace();
         }
         mGiftsIv.setImageDrawable(new BitmapDrawable(bitmap));
-        replaceNumberText(mNum);
+        replaceNumberText(mCombo);
     }
 
     /**
@@ -231,8 +228,8 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                mNum++;
-                replaceNumberText(mNum);
+                mCombo++;
+                replaceNumberText(mCombo);
                 mNumberImgTv.startAnimation(mGiftNumAnim);
                 stopCheckGiftCount();
                 removeDismissGiftCallback();
@@ -259,7 +256,7 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            if (mGiftCount > mNum) {
+            if (mGiftCount > mCombo) {
                 mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
             } else {
                 checkGiftCountSubscribe();
@@ -279,32 +276,45 @@ public class LeftGiftsItemLayout extends LinearLayout implements View.OnClickLis
 
     private static final int RESTART_GIFT_ANIMATION_CODE = 1002;
 
-
     private void checkGiftCountSubscribe() {
-        if (mSubscribe == null || mSubscribe.isUnsubscribed()) {
-            mSubscribe = Observable.interval(300, TimeUnit.MILLISECONDS).map(new Func1<Long, Void>() {
-                @Override
-                public Void call(Long aLong) {
-                    return null;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (mGiftCount > mCombo) {
+                    mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
                 }
-            }).subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Void>() {
-                        @Override
-                        public void call(Void aVoid) {
-                            if (mGiftCount > mNum) {
-                                mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
-                            }
-                        }
-                    });
+            }
+        };
+        mTimer = new Timer();
+        mTimer.schedule(task, 0, INTERVAL);
 
-        }
+//        if (mSubscribe == null || mSubscribe.isUnsubscribed()) {
+//            mSubscribe = Observable.interval(INTERVAL, TimeUnit.MILLISECONDS).map(new Func1<Long, Void>() {
+//                @Override
+//                public Void call(Long aLong) {
+//                    return null;
+//                }
+//            }).subscribeOn(Schedulers.newThread())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Action1<Void>() {
+//                        @Override
+//                        public void call(Void aVoid) {
+//                            if (mGiftCount > mCombo) {
+//                                mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
+//                            }
+//                        }
+//                    });
+//
+//        }
     }
 
-    private void stopCheckGiftCount() {
-        if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
-            mSubscribe.unsubscribe();
+    public void stopCheckGiftCount() {
+        if (mTimer != null) {
+            mTimer.cancel();
         }
+//        if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
+//            mSubscribe.unsubscribe();
+//        }
     }
 
     /**
