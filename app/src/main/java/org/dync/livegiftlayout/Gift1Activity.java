@@ -14,10 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.dync.giftlibrary.util.GiftPanelControl;
 import org.dync.giftlibrary.widget.GiftControl;
 import org.dync.giftlibrary.widget.GiftFrameLayout;
 import org.dync.giftlibrary.widget.GiftModel;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gift1Activity extends AppCompatActivity {
 
@@ -32,6 +40,7 @@ public class Gift1Activity extends AppCompatActivity {
     private ViewPager mViewpager;
     private LinearLayout mDotsLayout;
 
+    private String gifturl = "";
     private String giftstr = "";
     private RecyclerView mRecyclerView;
     private GiftControl giftControl;
@@ -45,14 +54,26 @@ public class Gift1Activity extends AppCompatActivity {
         giftFrameLayout1 = (GiftFrameLayout) findViewById(R.id.gift_layout1);
         giftFrameLayout2 = (GiftFrameLayout) findViewById(R.id.gift_layout2);
 
+//        giftFrameLayout2.replaceView(R.layout.left_gift_item_layout, new GiftFrameLayout.NewViewListener() {
+//            @Override
+//            public void init(View view) {
+//
+//            }
+//        });
         showGiftMsgList();
 
         initGiftLayout();
 
+        List<GiftBean.GiftListBean> giftListBeen = fromNetData();//来自网络礼物图片
+        List<GiftModel> giftModels = toGiftModel(giftListBeen);//转化为发送礼物的集合
+
         GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
+        giftPanelControl.init(giftModels);//这里如果为null则加载本地礼物图片
+        giftPanelControl.isClearStatus(false);
         giftPanelControl.setGiftListener(new GiftPanelControl.GiftListener() {
             @Override
-            public void getGiftStr(String giftStr) {
+            public void getGiftStr(String giftPic, String giftStr) {
+                gifturl = giftPic;
                 giftstr = giftStr;
             }
         });
@@ -76,7 +97,7 @@ public class Gift1Activity extends AppCompatActivity {
                         if (giftnum == 0) {
                             return;
                         } else {
-                            giftControl.loadGift(new GiftModel(giftstr, "安卓机器人", giftnum, "http://www.baidu.com", "123", "Lee123", "http://www.baidu.com", System.currentTimeMillis()));
+                            giftControl.loadGift(new GiftModel(giftstr, "安卓机器人", giftnum, gifturl, "123", "Lee123", "http://www.baidu.com", System.currentTimeMillis()));
                             adapter.add(giftstr);
                         }
                     }
@@ -93,6 +114,32 @@ public class Gift1Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //模拟从网络获取礼物url的集合
+    private List<GiftBean.GiftListBean> fromNetData(){
+        List<GiftBean.GiftListBean> list = new ArrayList<>();
+        try {
+            InputStream in= getAssets().open("gift.json");
+            InputStreamReader json=new InputStreamReader(in);
+            Gson gson = new Gson();
+            GiftBean giftBean = gson.fromJson(json, GiftBean.class);
+            list = giftBean.getGiftList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private List<GiftModel> toGiftModel(List<GiftBean.GiftListBean> datas){
+        List<GiftModel> giftModels = new ArrayList<>();
+        GiftModel giftModel;
+        for (int i = 0; i < datas.size(); i++){
+            GiftBean.GiftListBean giftListBean = datas.get(i);
+            giftModel = new GiftModel(giftListBean.getGiftName(), giftListBean.getGiftPic());
+            giftModels.add(giftModel);
+        }
+        return giftModels;
     }
 
     private void showGiftMsgList() {

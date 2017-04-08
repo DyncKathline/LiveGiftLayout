@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import org.dync.giftlibrary.R;
 import org.dync.giftlibrary.adapter.FaceGVAdapter;
 import org.dync.giftlibrary.adapter.FaceVPAdapter;
+import org.dync.giftlibrary.widget.GiftModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,22 +28,21 @@ public class GiftPanelControl {
     private int rows = 4;
     //每页显示的表情view
     private List<View> views = new ArrayList<>();
-    private String giftstr;
     private RecyclerView mRecyclerView;
     private ExpressionUtil expressionUtil;
     private LayoutInflater inflater;
-    private List<String> mDatas;
+    private List<GiftModel> mDatas;
     private Context mContext;
     private LinearLayout mDotsLayout;
     private ViewPager mViewpager;
 
-    public interface GiftListener{
-        void getGiftStr(String giftStr);
+    public interface GiftListener {
+        void getGiftStr(String giftPic, String giftStr);
     }
 
     private GiftListener giftListener;
 
-    public void setGiftListener(GiftListener listener){
+    public void setGiftListener(GiftListener listener) {
         giftListener = listener;
     }
 
@@ -52,17 +52,21 @@ public class GiftPanelControl {
      * @param recyclerView 横屏礼物面板的RecycleView
      * @param dotsLayout   竖屏礼物面板的小圆点父布局
      */
-    public GiftPanelControl(Context context, ViewPager viewPager, RecyclerView recyclerView, LinearLayout dotsLayout){
+    public GiftPanelControl(Context context, ViewPager viewPager, RecyclerView recyclerView, LinearLayout dotsLayout) {
         mContext = context;
         inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        expressionUtil = new ExpressionUtil();
         mViewpager = viewPager;
         mRecyclerView = recyclerView;
         mDotsLayout = dotsLayout;
-        init();
+//        init();
     }
 
-    private void init() {
+    /**
+     *
+     * @param datas datas为null时加载本地礼物图片
+     */
+    public void init(List<GiftModel> datas) {
+        mDatas = datas;
         initPortraitGift();
         intitLandscapeGift();
     }
@@ -72,10 +76,10 @@ public class GiftPanelControl {
      */
     private void intitLandscapeGift() {
         if (expressionUtil == null) {
-            expressionUtil = new ExpressionUtil();
+            expressionUtil = new ExpressionUtil(mDatas != null);
         }
         if (mDatas == null) {
-            mDatas = expressionUtil.initStaticFaces(mContext);
+            mDatas = expressionUtil.initStaticGifts(mContext);
         }
 
         expressionUtil.giftView(mContext, mRecyclerView, mDatas);
@@ -85,8 +89,12 @@ public class GiftPanelControl {
      * 初始化礼物面板，竖屏时显示
      */
     private void initPortraitGift() {
-        expressionUtil = new ExpressionUtil();
-        mDatas = expressionUtil.initStaticFaces(mContext);
+        if (expressionUtil == null) {
+            expressionUtil = new ExpressionUtil(mDatas != null);
+        }
+        if (mDatas == null) {
+            mDatas = expressionUtil.initStaticGifts(mContext);
+        }
         int pagesize = expressionUtil.getPagerCount(mDatas.size(), columns, rows);
         // 获取页数
         for (int i = 0; i < pagesize; i++) {
@@ -104,7 +112,7 @@ public class GiftPanelControl {
         }
         FaceVPAdapter mVpAdapter = new FaceVPAdapter(views);
         mViewpager.setAdapter(mVpAdapter);
-        mViewpager.setOnPageChangeListener(new PageChange());
+        mViewpager.setOnPageChangeListener(new PageChangeListener());
         mViewpager.setCurrentItem(0);
         if (pagesize > 1) {
             mDotsLayout.getChildAt(0).setSelected(true);
@@ -112,9 +120,9 @@ public class GiftPanelControl {
 
         expressionUtil.setGiftClickListener(new ExpressionUtil.GiftClickListener() {
             @Override
-            public void onClick(int position, String pngStr) {
-                if (giftListener != null){
-                    giftListener.getGiftStr(pngStr);
+            public void onClick(int position, String giftPic, String pngStr) {
+                if (giftListener != null) {
+                    giftListener.getGiftStr(giftPic, pngStr);
                 }
             }
         });
@@ -137,11 +145,20 @@ public class GiftPanelControl {
     private boolean left = false;//从右向左，positionOffset值逐渐增大
     private boolean right = false;//从左向右，positionOffset值逐渐减小
     private int lastValue = -1;
+    private boolean isClearStatus = true;//是否清除礼物选中的状态在切换页面时
+
+    /**
+     * 是否清除礼物选中的状态在切换页面时
+     * @param isClearStatus
+     */
+    public void isClearStatus(boolean isClearStatus){
+        this.isClearStatus = isClearStatus;
+    }
 
     /**
      * 表情页改变时，dots效果也要跟着改变
      */
-    class PageChange implements ViewPager.OnPageChangeListener {
+    class PageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -173,8 +190,13 @@ public class GiftPanelControl {
             for (int i = 0; i < views.size(); i++) {//清除选中，当礼物页面切换到另一个礼物页面
                 RecyclerView view = (RecyclerView) views.get(i);
                 FaceGVAdapter adapter = (FaceGVAdapter) view.getAdapter();
-                adapter.clearSelection();
-                giftstr = "";
+                if (isClearStatus){
+                    adapter.clearSelection();
+                    if (giftListener != null) {
+                        giftListener.getGiftStr("", "");
+                    }
+                }
+
             }
         }
 

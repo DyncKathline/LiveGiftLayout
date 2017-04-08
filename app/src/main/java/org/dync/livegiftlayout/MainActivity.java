@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.button1:
                 startActivity(new Intent(MainActivity.this, Gift1Activity.class));
                 break;
-            case R.id.button2:
-                startActivity(new Intent(MainActivity.this, Gift2Activity.class));
-                break;
         }
     }
 }

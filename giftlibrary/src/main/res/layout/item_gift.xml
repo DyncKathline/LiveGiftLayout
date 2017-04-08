@@ -51,16 +51,14 @@
             android:layout_width="39dp"
             android:layout_height="39dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/infoTv"
-            android:src="@mipmap/diamond2x" />
+            android:layout_toRightOf="@id/infoTv" />
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:src="@drawable/light_star_anim" />
+        android:layout_marginLeft="120dp" />
 
 
     <org.dync.giftlibrary.widget.StrokeTextView

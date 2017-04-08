@@ -23,6 +23,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.dync.giftlibrary.R;
 
 import java.io.IOException;
@@ -356,15 +361,25 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 anim_num.setText("x " + mCombo);
             }
         });
-        Bitmap bitmap = null;
-        try {
-            bitmap = BitmapFactory.decodeStream(getContext().getAssets().open(mGift.getGiftId()));
+        if (!mGift.getGiftPic().equals("")){
+            Glide.with(mContext).load(mGift.getGiftPic()).placeholder(R.mipmap.loading).into(new SimpleTarget<GlideDrawable>() {
+                @Override
+                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    anim_gift.setImageDrawable(resource);
+                }
+            });
+        }else {
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContext().getAssets().open(mGift.getGiftId()));
 
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        anim_gift.setImageDrawable(new BitmapDrawable(bitmap));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            anim_gift.setImageDrawable(new BitmapDrawable(bitmap));
 //        anim_gift.setImageBitmap(bitmap);
+        }
+
 
         //礼物飞入
         ObjectAnimator flyFromLtoR2 = GiftAnimationUtil.createFlyFromLtoR(anim_gift, -getWidth(), 0, 400, new DecelerateInterpolator());

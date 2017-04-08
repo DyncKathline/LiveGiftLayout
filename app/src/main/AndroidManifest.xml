@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.dync.livegiftlayout">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,9 +21,6 @@
         </activity>
         <activity
             android:name=".Gift1Activity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".Gift2Activity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>
 

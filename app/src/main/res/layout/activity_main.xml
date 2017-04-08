@@ -19,14 +19,4 @@
         android:onClick="onClick"
         android:text="Gift1" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="18dp"
-        android:onClick="onClick"
-        android:text="Gift2" />
-
 </RelativeLayout>

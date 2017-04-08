@@ -11,15 +11,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.dync.giftlibrary.R;
-import org.dync.giftlibrary.util.ExpressionUtil;
+import org.dync.giftlibrary.widget.GiftModel;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler> {
-    private List<String> list;
+    private List<GiftModel> list;
     private Context mContext;
+    private boolean isNetData;
 
     private ViewHodler mHolder;
     private int clickTemp = -1;
@@ -33,10 +36,11 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
         return clickTemp;
     }
 
-    public FaceGVAdapter(List<String> list, Context mContext) {
+    public FaceGVAdapter(List<GiftModel> list, Context mContext, boolean isNetData) {
         super();
         this.list = list;
         this.mContext = mContext;
+        this.isNetData = isNetData;
     }
 
     public void clear() {
@@ -51,13 +55,29 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
 
     @Override
     public void onBindViewHolder(ViewHodler holder, final int position) {
-        try {
-            Bitmap mBitmap = BitmapFactory.decodeStream(mContext.getAssets().open(ExpressionUtil.ASSETS_ROOT + list.get(position)));
-            holder.iv.setImageBitmap(mBitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
+        final GiftModel giftModel = list.get(position);
+        if (isNetData){
+            Glide.with(mContext).load(giftModel.getGiftPic()).placeholder(R.mipmap.loading).into(holder.iv);
+            holder.tv.setText(giftModel.getGiftName());
+        }else {
+            try {
+                Bitmap mBitmap = BitmapFactory.decodeStream(mContext.getAssets().open(giftModel.getGiftName()));
+                holder.iv.setImageBitmap(mBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            holder.tv.setText(giftModel.getGiftName());
         }
-        holder.tv.setText(ExpressionUtil.ASSETS_ROOT + list.get(position));
+
+        holder.llroot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(v, giftModel, position);
+                }
+            }
+        });
+
         if (clickTemp == position) {
             holder.llroot.setBackgroundResource(R.drawable.shape_gift_chose);
             mHolder = holder;
@@ -88,22 +108,11 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
             llroot = (LinearLayout) view.findViewById(R.id.ll_gift_root);
             iv = (ImageView) view.findViewById(R.id.face_img);
             tv = (TextView) view.findViewById(R.id.face_text);
-            llroot.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() <= list.size() && getAdapterPosition() != -1) {
-                        if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onItemClick(v, getAdapterPosition());
-                        }
-                    }
-                }
-            });
-
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, GiftModel giftModel, int position);
     }
 
     public OnItemClickListener mOnItemClickListener;

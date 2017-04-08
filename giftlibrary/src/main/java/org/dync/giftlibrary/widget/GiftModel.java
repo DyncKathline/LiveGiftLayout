@@ -31,6 +31,16 @@ public class GiftModel {
     public GiftModel() {
     }
 
+    /**
+     * 礼物面板
+     * @param giftName
+     * @param giftPic
+     */
+    public GiftModel(String giftName, String giftPic){
+        setGiftName(giftName);
+        setGiftPic(giftPic);
+    }
+
     public GiftModel(String giftId, String giftName, int giftCont, String giftPic, String sendUserId,
                      String sendUserName, String sendUserPic, Long sendGiftTime) {
         setGiftId(giftId);
