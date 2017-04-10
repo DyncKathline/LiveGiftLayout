@@ -344,6 +344,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     public void clearHandler() {
         mHandler.removeCallbacksAndMessages(null);
+        mHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
     }
 
     public AnimatorSet startAnimation() {
@@ -412,12 +413,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (mGiftCount > mCombo) {//连击
-                    mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
-                } else {
-                    mCurrentAnimRunnable = new GiftNumAnimaRunnable();
-                    mHandler.postDelayed(mCurrentAnimRunnable, GIFT_DISMISS_TIME);
-                    checkGiftCountSubscribe();
+                if (mHandler != null) {
+                    if (mGiftCount > mCombo) {//连击
+                        mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
+                    } else {
+                        mCurrentAnimRunnable = new GiftNumAnimaRunnable();
+                        mHandler.postDelayed(mCurrentAnimRunnable, GIFT_DISMISS_TIME);
+                        checkGiftCountSubscribe();
+                    }
                 }
             }
         });
