@@ -9,6 +9,7 @@ public class GiftModel {
     private String giftName;
     private int giftCuont;
     private String giftPic;
+    private String giftPrice;
     private String sendUserId;
     private String sendUserName;
     private String sendUserPic;
@@ -36,9 +37,10 @@ public class GiftModel {
      * @param giftName
      * @param giftPic
      */
-    public GiftModel(String giftName, String giftPic){
+    public GiftModel(String giftName, String giftPic, String giftPrice){
         setGiftName(giftName);
         setGiftPic(giftPic);
+        setGiftPrice(giftPrice);
     }
 
     public GiftModel(String giftId, String giftName, int giftCont, String giftPic, String sendUserId,
@@ -114,6 +116,14 @@ public class GiftModel {
 
     public void setGiftPic(String giftPic) {
         this.giftPic = giftPic;
+    }
+
+    public String getGiftPrice() {
+        return giftPrice;
+    }
+
+    public void setGiftPrice(String giftPrice) {
+        this.giftPrice = giftPrice;
     }
 
     public String getHitCombo() {

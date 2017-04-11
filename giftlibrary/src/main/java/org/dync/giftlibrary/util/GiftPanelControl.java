@@ -37,7 +37,7 @@ public class GiftPanelControl {
     private ViewPager mViewpager;
 
     public interface GiftListener {
-        void getGiftStr(String giftPic, String giftStr);
+        void getGiftInfo(String giftPic, String giftName, String giftPrice);
     }
 
     private GiftListener giftListener;
@@ -120,9 +120,9 @@ public class GiftPanelControl {
 
         expressionUtil.setGiftClickListener(new ExpressionUtil.GiftClickListener() {
             @Override
-            public void onClick(int position, String giftPic, String pngStr) {
+            public void onClick(int position, String giftPic, String giftName, String giftPrice) {
                 if (giftListener != null) {
-                    giftListener.getGiftStr(giftPic, pngStr);
+                    giftListener.getGiftInfo(giftPic, giftName, giftPrice);
                 }
             }
         });
@@ -193,7 +193,7 @@ public class GiftPanelControl {
                 if (isClearStatus){
                     adapter.clearSelection();
                     if (giftListener != null) {
-                        giftListener.getGiftStr("", "");
+                        giftListener.getGiftInfo("", "", "");
                     }
                 }
 

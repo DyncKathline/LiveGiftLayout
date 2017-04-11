@@ -40,8 +40,9 @@ public class Gift1Activity extends AppCompatActivity {
     private ViewPager mViewpager;
     private LinearLayout mDotsLayout;
 
-    private String gifturl = "";
-    private String giftstr = "";
+    private String mGifturl = "";
+    private String mGiftName = "";
+    private String mGiftPrice = "";
     private RecyclerView mRecyclerView;
     private GiftControl giftControl;
     private RecyclerView recyclerView;
@@ -69,12 +70,12 @@ public class Gift1Activity extends AppCompatActivity {
 
         GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
         giftPanelControl.init(giftModels);//这里如果为null则加载本地礼物图片
-        giftPanelControl.isClearStatus(false);
         giftPanelControl.setGiftListener(new GiftPanelControl.GiftListener() {
             @Override
-            public void getGiftStr(String giftPic, String giftStr) {
-                gifturl = giftPic;
-                giftstr = giftStr;
+            public void getGiftInfo(String giftPic, String giftName, String giftPrice) {
+                mGifturl = giftPic;
+                mGiftName = giftName;
+                mGiftPrice = giftPrice;
             }
         });
         giftControl = new GiftControl(Gift1Activity.this);
@@ -88,7 +89,7 @@ public class Gift1Activity extends AppCompatActivity {
         btnGift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(giftstr)) {
+                if (TextUtils.isEmpty(mGiftName)) {
                     Toast.makeText(getApplication(), "你还没选择礼物呢", Toast.LENGTH_SHORT).show();
                 } else {
                     String numStr = tvGiftNum.getText().toString();
@@ -97,8 +98,8 @@ public class Gift1Activity extends AppCompatActivity {
                         if (giftnum == 0) {
                             return;
                         } else {
-                            giftControl.loadGift(new GiftModel(giftstr, "安卓机器人", giftnum, gifturl, "123", "Lee123", "http://www.baidu.com", System.currentTimeMillis()));
-                            adapter.add(giftstr);
+                            giftControl.loadGift(new GiftModel(mGiftName, "安卓机器人", giftnum, mGifturl, "123", "Lee123", "http://www.baidu.com", System.currentTimeMillis()));
+                            adapter.add(mGiftName);
                         }
                     }
                 }
@@ -136,7 +137,7 @@ public class Gift1Activity extends AppCompatActivity {
         GiftModel giftModel;
         for (int i = 0; i < datas.size(); i++){
             GiftBean.GiftListBean giftListBean = datas.get(i);
-            giftModel = new GiftModel(giftListBean.getGiftName(), giftListBean.getGiftPic());
+            giftModel = new GiftModel(giftListBean.getGiftName(), giftListBean.getGiftPic(), giftListBean.getGiftPrice());
             giftModels.add(giftModel);
         }
         return giftModels;

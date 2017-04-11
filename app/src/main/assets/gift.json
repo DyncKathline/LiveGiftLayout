@@ -2,207 +2,258 @@
   "giftList": [
     {
       "giftName": "000.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/000.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/000.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "001.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/001.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/001.png",
+      "giftPrice": "2"
     },
     {
       "giftName": "002.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/002.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/002.png",
+      "giftPrice": "3"
     },
     {
       "giftName": "003.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/003.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/003.png",
+      "giftPrice": "4"
     },
     {
       "giftName": "004.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/004.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/004.png",
+      "giftPrice": "5"
     },
     {
       "giftName": "005.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/005.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/005.png",
+      "giftPrice": "6"
     },
     {
       "giftName": "006.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/006.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/006.png",
+      "giftPrice": "7"
     },
     {
       "giftName": "007.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/007.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/007.png",
+      "giftPrice": "8"
     },
     {
       "giftName": "008.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/008.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/008.png",
+      "giftPrice": "9"
     },
     {
       "giftName": "009.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/009.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/009.png",
+      "giftPrice": "10"
     },
     {
       "giftName": "010.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/010.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/010.png",
+      "giftPrice": "11"
     },
     {
       "giftName": "011.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/011.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/011.png",
+      "giftPrice": "12"
     },
     {
       "giftName": "012.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/012.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/012.png",
+      "giftPrice": "13"
     },
     {
       "giftName": "013.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/013.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/013.png",
+      "giftPrice": "14"
     },
     {
       "giftName": "014.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/014.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/014.png",
+      "giftPrice": "15"
     },
     {
       "giftName": "015.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/015.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/015.png",
+      "giftPrice": "16"
     },
     {
       "giftName": "016.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/016.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/016.png",
+      "giftPrice": "17"
     },
     {
       "giftName": "017.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/017.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/017.png",
+      "giftPrice": "18"
     },
     {
       "giftName": "018.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/008.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/008.png",
+      "giftPrice": "19"
     },
     {
       "giftName": "019.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/019.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/019.png",
+      "giftPrice": "20"
     },
     {
       "giftName": "020.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/020.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/020.png",
+      "giftPrice": "21"
     },
     {
       "giftName": "021.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/021.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/021.png",
+      "giftPrice": "22"
     },
     {
       "giftName": "022.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/022.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/022.png",
+      "giftPrice": "23"
     },
     {
       "giftName": "023.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/023.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/023.png",
+      "giftPrice": "24"
     },
     {
       "giftName": "024.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/024.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/024.png",
+      "giftPrice": "25"
     },
     {
       "giftName": "025.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/025.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/025.png",
+      "giftPrice": "26"
     },
     {
       "giftName": "026.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/026.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/026.png",
+      "giftPrice": "27"
     },
     {
       "giftName": "027.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/027.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/027.png",
+      "giftPrice": "28"
     },
     {
       "giftName": "028.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/028.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/028.png",
+      "giftPrice": "29"
     },
     {
       "giftName": "029.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/029.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/029.png",
+      "giftPrice": "30"
     },
     {
       "giftName": "030.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/030.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/030.png",
+      "giftPrice": "31"
     },
     {
       "giftName": "031.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/031.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/031.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "032.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/032.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/032.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "033.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/033.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/033.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "034.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/034.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/034.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "035.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/035.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/035.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "036.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/036.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/036.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "037.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/037.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/037.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "038.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/038.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/038.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "039.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/039.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/039.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "040.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/040.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/040.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "041.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/041.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/041.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "042.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/042.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/042.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "043.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/043.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/043.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "014.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/014.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/014.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "045.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/045.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/045.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "046.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/046.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/046.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "047.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/047.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/047.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "048.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/048.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/048.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "049.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/049.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/049.png",
+      "giftPrice": "1"
     },
     {
       "giftName": "050.png",
-      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/050.png"
+      "giftPic": "https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/050.png",
+      "giftPrice": "1"
     }
   ]
 }

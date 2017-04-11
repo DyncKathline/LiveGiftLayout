@@ -159,11 +159,12 @@ public class ExpressionUtil {
             public void onItemClick(View view, GiftModel giftModel, int position) {
                 try {
                     String giftPic = giftModel.getGiftPic();
-                    String pngStr = giftModel.getGiftName();
+                    String giftName = giftModel.getGiftName();
+                    String giftPrice = giftModel.getGiftPrice();
                     mGvAdapter.setSeclection(position);
                     mGvAdapter.notifyDataSetChanged();
                     if (giftClickListener != null) {
-                        giftClickListener.onClick(position, giftPic, pngStr);
+                        giftClickListener.onClick(position, giftPic, giftName, giftPrice);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -207,11 +208,12 @@ public class ExpressionUtil {
                 try {
                     String giftPic = giftModel.getGiftPic();
                     String pngStr = giftModel.getGiftName();
+                    String giftPrice = giftModel.getGiftPrice();
                     setView(context, showView, pngStr);
                     mGvAdapter.setSeclection(position);
                     mGvAdapter.notifyDataSetChanged();
                     if (giftClickListener != null) {
-                        giftClickListener.onClick(position, giftPic, pngStr);
+                        giftClickListener.onClick(position, giftPic, pngStr, giftPrice);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -223,7 +225,7 @@ public class ExpressionUtil {
     }
 
     public interface GiftClickListener {
-        void onClick(int position, String giftPic, String pngStr);
+        void onClick(int position, String giftPic, String giftName, String giftPrice);
     }
 
     private GiftClickListener giftClickListener;
@@ -252,7 +254,7 @@ public class ExpressionUtil {
             String[] gifts = context.getAssets().list(ASSETS_ROOT.substring(0, ASSETS_ROOT.length() - 1));
             //将Assets中的表情名称转为字符串一一添加进staticGiftsList
             for (int i = 0; i < gifts.length; i++) {
-                giftModel = new GiftModel(ASSETS_ROOT+gifts[i], "");
+                giftModel = new GiftModel(ASSETS_ROOT+gifts[i], "", i+1+"");
                 giftsList.add(giftModel);
             }
         } catch (Exception e) {

@@ -22,10 +22,12 @@ public class GiftBean {
         /**
          * giftName : 000.png
          * giftPic : https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/giftlibrary/src/main/assets/p/000.png
+         * giftPrice : 1
          */
 
         private String giftName;
         private String giftPic;
+        private String giftPrice;
 
         public String getGiftName() {
             return giftName;
@@ -41,6 +43,14 @@ public class GiftBean {
 
         public void setGiftPic(String giftPic) {
             this.giftPic = giftPic;
+        }
+
+        public String getGiftPrice() {
+            return giftPrice;
+        }
+
+        public void setGiftPrice(String giftPrice) {
+            this.giftPrice = giftPrice;
         }
     }
 }

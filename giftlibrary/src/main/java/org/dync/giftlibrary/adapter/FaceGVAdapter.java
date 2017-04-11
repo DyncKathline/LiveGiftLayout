@@ -57,18 +57,18 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
     public void onBindViewHolder(ViewHodler holder, final int position) {
         final GiftModel giftModel = list.get(position);
         if (isNetData){
-            Glide.with(mContext).load(giftModel.getGiftPic()).placeholder(R.mipmap.loading).into(holder.iv);
-            holder.tv.setText(giftModel.getGiftName());
+            Glide.with(mContext).load(giftModel.getGiftPic()).placeholder(R.mipmap.loading).into(holder.giftImg);
         }else {
             try {
                 Bitmap mBitmap = BitmapFactory.decodeStream(mContext.getAssets().open(giftModel.getGiftName()));
-                holder.iv.setImageBitmap(mBitmap);
+                holder.giftImg.setImageBitmap(mBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            holder.tv.setText(giftModel.getGiftName());
         }
 
+        holder.giftName.setText(giftModel.getGiftName());
+        holder.giftPrice.setText(giftModel.getGiftPrice());
         holder.llroot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,14 +100,16 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
 
     class ViewHodler extends RecyclerView.ViewHolder {
         LinearLayout llroot;
-        ImageView iv;
-        TextView tv;
+        ImageView giftImg;
+        TextView giftName;
+        TextView giftPrice;
 
         public ViewHodler(View view) {
             super(view);
             llroot = (LinearLayout) view.findViewById(R.id.ll_gift_root);
-            iv = (ImageView) view.findViewById(R.id.face_img);
-            tv = (TextView) view.findViewById(R.id.face_text);
+            giftImg = (ImageView) view.findViewById(R.id.face_img);
+            giftName = (TextView) view.findViewById(R.id.face_name);
+            giftPrice = (TextView) view.findViewById(R.id.face_price);
         }
     }
 
