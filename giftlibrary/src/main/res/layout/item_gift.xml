@@ -21,7 +21,7 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ember" />
+            android:src="@mipmap/icon" />
 
         <TextView
             android:id="@+id/nickNameTv"

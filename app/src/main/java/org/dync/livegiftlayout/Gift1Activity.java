@@ -98,7 +98,7 @@ public class Gift1Activity extends AppCompatActivity {
                         if (giftnum == 0) {
                             return;
                         } else {
-                            giftControl.loadGift(new GiftModel(mGiftName, "安卓机器人", giftnum, mGifturl, "123", "Lee123", "http://www.baidu.com", System.currentTimeMillis()));
+                            giftControl.loadGift(new GiftModel(mGiftName, "礼物名字", giftnum, mGifturl, "1234", "吕靓茜", "", System.currentTimeMillis()));
                             adapter.add(mGiftName);
                         }
                     }

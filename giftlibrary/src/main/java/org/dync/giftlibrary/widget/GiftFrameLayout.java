@@ -359,7 +359,12 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 GiftFrameLayout.this.setAlpha(1f);
                 isShowing = true;
                 isEnd = false;
-                Glide.with(mContext).load(mGift.getSendUserPic()).transform(new GlideCircleTransform(mContext)).into(anim_header);
+                if (mGift.getSendUserPic().equals("")){
+                    Glide.with(mContext).load(R.mipmap.icon).transform(new GlideCircleTransform(mContext)).into(anim_header);
+                }else {
+                    Glide.with(mContext).load(mGift.getSendUserPic()).transform(new GlideCircleTransform(mContext)).into(anim_header);
+                }
+
                 anim_num.setText("x " + mCombo);
             }
         });
