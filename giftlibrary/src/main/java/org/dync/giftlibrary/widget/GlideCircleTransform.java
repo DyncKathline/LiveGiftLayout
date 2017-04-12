@@ -1,4 +1,4 @@
-package org.dync.livegiftlayout;
+package org.dync.giftlibrary.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
