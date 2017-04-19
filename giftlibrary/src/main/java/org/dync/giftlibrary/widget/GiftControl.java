@@ -6,7 +6,9 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.dync.giftlibrary.util.ThreadUtil;
+
+import java.util.ArrayList;
 
 /**
  * Created by KathLine on 2017/1/8.
@@ -18,7 +20,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     /**
      * 礼物队列(在多个线程中使用此List)
      */
-    private CopyOnWriteArrayList<GiftModel> mGiftQueue;
+    private ArrayList<GiftModel> mGiftQueue;
 
     /**
      * 礼物1
@@ -31,7 +33,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     private GiftFrameLayout mSecondItemGift;
 
     public GiftControl(Context context) {
-        mGiftQueue = new CopyOnWriteArrayList<>();
+        mGiftQueue = new ArrayList<>();
     }
 
     public void setGiftLayout(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
@@ -86,7 +88,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         }
     }
 
-    private void addGiftQueue(GiftModel gift, boolean supportCombo) {
+    private void addGiftQueue(final GiftModel gift, final boolean supportCombo) {
         if (mGiftQueue != null) {
             if (mGiftQueue.size() == 0) {
                 Log.d(TAG, "addGiftQueue---集合个数：" + mGiftQueue.size() + ",礼物：" + gift.getGiftId());
@@ -96,24 +98,30 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             }
         }
         Log.d(TAG, "addGiftQueue---集合个数：" + mGiftQueue.size() + ",礼物：" + gift.getGiftId());
-        if (supportCombo) {
-            boolean addflag = false;
-            for (GiftModel model : mGiftQueue) {
-                if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
-                    Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
-                    model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
-                    addflag = true;
-                    break;
+        ThreadUtil.runInThread(new Runnable() {
+            @Override
+            public void run() {
+                if (supportCombo) {
+                    boolean addflag = false;
+                    for (GiftModel model : mGiftQueue) {
+                        if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
+                            Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
+                            model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
+                            addflag = true;
+                            break;
+                        }
+                    }
+                    //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
+                    if (!addflag) {
+                        Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
+                        mGiftQueue.add(gift);
+                    }
+                } else {
+                    mGiftQueue.add(gift);
                 }
             }
-            //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
-            if (!addflag) {
-                Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
-                mGiftQueue.add(gift);
-            }
-        } else {
-            mGiftQueue.add(gift);
-        }
+        });
+
     }
 
     /**
