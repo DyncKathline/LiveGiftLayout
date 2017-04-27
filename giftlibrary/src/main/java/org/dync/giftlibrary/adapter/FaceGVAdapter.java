@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.dync.giftlibrary.R;
+import org.dync.giftlibrary.util.RecyclerViewUtil;
 import org.dync.giftlibrary.widget.GiftModel;
 
 import java.io.IOException;
@@ -21,11 +22,13 @@ import java.util.List;
 
 public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler> {
     private List<GiftModel> list;
+    private RecyclerView mRecyclerView;
     private Context mContext;
     private boolean isNetData;
 
     private ViewHodler mHolder;
     private int clickTemp = -1;
+    private RecyclerViewUtil recyclerViewUtil;
 
     //标识选择的Item
     public void setSeclection(int position) {
@@ -36,11 +39,35 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
         return clickTemp;
     }
 
-    public FaceGVAdapter(List<GiftModel> list, Context mContext, boolean isNetData) {
+    public FaceGVAdapter(RecyclerView recyclerView, List<GiftModel> list, Context mContext, boolean isNetData) {
         super();
+        this.mRecyclerView = recyclerView;
         this.list = list;
         this.mContext = mContext;
         this.isNetData = isNetData;
+        recyclerViewClickListenter(list, mContext);
+    }
+
+    private void recyclerViewClickListenter(final List<GiftModel> list, Context mContext) {
+        recyclerViewUtil = new RecyclerViewUtil(mContext, mRecyclerView);
+        recyclerViewUtil.setOnItemClickListener(new RecyclerViewUtil.OnItemClickListener() {
+
+            private LinearLayout llroot;
+
+            @Override
+            public void onItemClick(int position, View view) {
+                if (mOnItemClickListener != null) {
+                    final GiftModel giftModel = list.get(position);
+                    mOnItemClickListener.onItemClick(view, giftModel, position);
+                    if (llroot == null) {
+                        llroot = (LinearLayout) view.findViewById(R.id.ll_gift_root);
+                    }
+                    llroot.setBackgroundResource(R.drawable.shape_gift_chose);
+                    clickTemp = position;
+                    notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     public void clear() {
@@ -54,11 +81,11 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
     }
 
     @Override
-    public void onBindViewHolder(ViewHodler holder, final int position) {
+    public void onBindViewHolder(final ViewHodler holder, final int position) {
         final GiftModel giftModel = list.get(position);
-        if (isNetData){
+        if (isNetData) {
             Glide.with(mContext).load(giftModel.getGiftPic()).placeholder(R.mipmap.loading).into(holder.giftImg);
-        }else {
+        } else {
             try {
                 Bitmap mBitmap = BitmapFactory.decodeStream(mContext.getAssets().open(giftModel.getGiftName()));
                 holder.giftImg.setImageBitmap(mBitmap);
@@ -69,15 +96,6 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
 
         holder.giftName.setText(giftModel.getGiftName());
         holder.giftPrice.setText(giftModel.getGiftPrice());
-        holder.llroot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(v, giftModel, position);
-                }
-            }
-        });
-
         if (clickTemp == position) {
             holder.llroot.setBackgroundResource(R.drawable.shape_gift_chose);
             mHolder = holder;

@@ -143,7 +143,7 @@ public class ExpressionUtil {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        final FaceGVAdapter mGvAdapter = new FaceGVAdapter(staticGiftsList, context, isNetData);
+        final FaceGVAdapter mGvAdapter = new FaceGVAdapter(recyclerView, staticGiftsList, context, isNetData);
         recyclerView.setAdapter(mGvAdapter);
 
         // 单击表情执行的操作
@@ -154,8 +154,8 @@ public class ExpressionUtil {
                     String giftPic = giftModel.getGiftPic();
                     String giftName = giftModel.getGiftName();
                     String giftPrice = giftModel.getGiftPrice();
-                    mGvAdapter.setSeclection(position);
-                    mGvAdapter.notifyDataSetChanged();
+//                    mGvAdapter.setSeclection(position);
+//                    mGvAdapter.notifyDataSetChanged();
                     if (giftClickListener != null) {
                         giftClickListener.onClick(position, giftPic, giftName, giftPrice);
                     }
@@ -192,7 +192,7 @@ public class ExpressionUtil {
                                 .size() ? staticGiftsList.size() : (columns * rows - 0)
                                 * (position + 1)));
 
-        final FaceGVAdapter mGvAdapter = new FaceGVAdapter(subList, context, isNetData);
+        final FaceGVAdapter mGvAdapter = new FaceGVAdapter(recyclerView, subList, context, isNetData);
         recyclerView.setAdapter(mGvAdapter);
         // 单击表情执行的操作
         mGvAdapter.setOnItemClickListener(new FaceGVAdapter.OnItemClickListener() {
@@ -203,8 +203,8 @@ public class ExpressionUtil {
                     String pngStr = giftModel.getGiftName();
                     String giftPrice = giftModel.getGiftPrice();
                     setView(context, showView, pngStr);
-                    mGvAdapter.setSeclection(position);
-                    mGvAdapter.notifyDataSetChanged();
+//                    mGvAdapter.setSeclection(position);
+//                    mGvAdapter.notifyDataSetChanged();
                     if (giftClickListener != null) {
                         giftClickListener.onClick(position, giftPic, pngStr, giftPrice);
                     }
