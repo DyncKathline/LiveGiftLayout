@@ -7,7 +7,7 @@ public class GiftModel {
 
     private String giftId;
     private String giftName;
-    private int giftCuont;
+    private int giftCount;
     private String giftPic;
     private String giftPrice;
     private String sendUserId;
@@ -21,7 +21,7 @@ public class GiftModel {
         GiftModel giftModel = new GiftModel();
         giftModel.setGiftId(giftId);
         giftModel.setGiftName(giftName);
-        giftModel.setGiftCuont(giftCont);
+        giftModel.setGiftCount(giftCont);
         giftModel.setGiftPic(giftPic);
         giftModel.setSendUserId(sendUserId);
         giftModel.setSendUserName(sendUserName);
@@ -47,7 +47,7 @@ public class GiftModel {
                      String sendUserName, String sendUserPic, Long sendGiftTime) {
         setGiftId(giftId);
         setGiftName(giftName);
-        setGiftCuont(giftCont);
+        setGiftCount(giftCont);
         setGiftPic(giftPic);
         setSendUserId(sendUserId);
         setSendUserName(sendUserName);
@@ -59,7 +59,7 @@ public class GiftModel {
         setGiftId(giftId);
         setSendUserName(sendUserName);
         setSendUserPic(sendUserPic);
-        setGiftCuont(giftCont);
+        setGiftCount(giftCont);
     }
 
     public String getGiftId() {
@@ -78,12 +78,12 @@ public class GiftModel {
         this.giftName = giftName;
     }
 
-    public int getGiftCuont() {
-        return giftCuont;
+    public int getGiftCount() {
+        return giftCount;
     }
 
-    public void setGiftCuont(int giftCuont) {
-        this.giftCuont = giftCuont;
+    public void setGiftCount(int giftCount) {
+        this.giftCount = giftCount;
     }
 
     public String getSendUserId() {

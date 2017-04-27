@@ -139,8 +139,8 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             return false;
         }
         mGift = gift;
-        if (0 != gift.getGiftCuont()) {
-            this.mGiftCount = gift.getGiftCuont();
+        if (0 != gift.getGiftCount()) {
+            this.mGiftCount = gift.getGiftCount();
         }
         if (!TextUtils.isEmpty(gift.getSendUserName())) {
             anim_nickname.setText(gift.getSendUserName());
@@ -271,7 +271,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      */
     public synchronized void setGiftCount(int count) {
         mGiftCount += count;
-        mGift.setGiftCuont(mGiftCount);
+        mGift.setGiftCount(mGiftCount);
     }
 
     public int getGiftCount() {
@@ -345,6 +345,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     public void clearHandler() {
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
+        mGiftAnimationListener = null;
     }
 
     public AnimatorSet startAnimation() {

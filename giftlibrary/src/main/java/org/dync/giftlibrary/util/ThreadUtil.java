@@ -86,8 +86,8 @@ public class ThreadUtil {
                 if (mThreadPool == null) {
                     // cpu个数
                     int cpuNum = Runtime.getRuntime().availableProcessors();
-                    // int count = cpuNum * 2 + 1;
-                    int count = 15;
+                     int count = cpuNum * 2 + 1;
+//                    int count = 15;
                     System.out.println("cpu个数:" + cpuNum);
                     mThreadPool = new ThreadPool(count, count, 0L);
                     mHandler = new Handler(Looper.getMainLooper());

@@ -3,12 +3,12 @@ package org.dync.giftlibrary.widget;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.content.Context;
 import android.util.Log;
 
 import org.dync.giftlibrary.util.ThreadUtil;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by KathLine on 2017/1/8.
@@ -18,7 +18,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     private static final String TAG = "GiftControl";
     /**
-     * 礼物队列(在多个线程中使用此List)
+     * 礼物队列
      */
     private ArrayList<GiftModel> mGiftQueue;
 
@@ -32,8 +32,9 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
      */
     private GiftFrameLayout mSecondItemGift;
 
-    public GiftControl(Context context) {
+    public GiftControl(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
         mGiftQueue = new ArrayList<>();
+        setGiftLayout(giftFrameLayout1, giftFrameLayout2);
     }
 
     public void setGiftLayout(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
@@ -66,8 +67,8 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mFirstItemGift.isShowing()) {
                     if (mFirstItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mFirstItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
-                        Log.i(TAG, "addGiftQueue: ========mFirstItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
-                        mFirstItemGift.setGiftCount(gift.getGiftCuont());
+                        Log.i(TAG, "addGiftQueue: ========mFirstItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
+                        mFirstItemGift.setGiftCount(gift.getGiftCount());
                         mFirstItemGift.setSendGiftTime(gift.getSendGiftTime());
                         return;
                     }
@@ -76,8 +77,8 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 if (mSecondItemGift.isShowing()) {
                     if (mSecondItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mSecondItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
                         //连击
-                        Log.i(TAG, "addGiftQueue: ========mSecondItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCuont());
-                        mSecondItemGift.setGiftCount(gift.getGiftCuont());
+                        Log.i(TAG, "addGiftQueue: ========mSecondItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
+                        mSecondItemGift.setGiftCount(gift.getGiftCount());
                         mSecondItemGift.setSendGiftTime(gift.getSendGiftTime());
                         return;
                     }
@@ -105,15 +106,15 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                     boolean addflag = false;
                     for (GiftModel model : mGiftQueue) {
                         if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
-                            Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
-                            model.setGiftCuont(model.getGiftCuont() + gift.getGiftCuont());
+                            Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCount());
+                            model.setGiftCount(model.getGiftCount() + gift.getGiftCount());
                             addflag = true;
                             break;
                         }
                     }
                     //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
                     if (!addflag) {
-                        Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCuont());
+                        Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCount());
                         mGiftQueue.add(gift);
                     }
                 } else {
@@ -157,19 +158,61 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (mGiftQueue.size() != 0) {
             gift = mGiftQueue.get(0);
             mGiftQueue.remove(0);
-            Log.i(TAG, "getGift---集合个数：" + mGiftQueue.size() + ",送出礼物---" + gift.getGiftId() + ",礼物数X" + gift.getGiftCuont());
+            Log.i(TAG, "getGift---集合个数：" + mGiftQueue.size() + ",送出礼物---" + gift.getGiftId() + ",礼物数X" + gift.getGiftCount());
         }
         return gift;
     }
 
+    /**
+     * 通过获取giftId和getSendUserName当前用户giftId礼物总数
+     * @param giftId
+     * @param userName
+     * @return
+     */
     public int getCurGiftCount(String giftId, String userName) {
-        int curGiftCount = -1;
+        int curGiftCount = 0;
         GiftModel firstGift = mFirstItemGift.getGift();
         GiftModel secondGift = mSecondItemGift.getGift();
         if (firstGift != null && firstGift.getGiftId().equals(giftId) && firstGift.getSendUserName().equals(userName)) {
             curGiftCount = mFirstItemGift.getGiftCount();
         } else if (secondGift != null && secondGift.getGiftId().equals(giftId) && secondGift.getSendUserName().equals(userName)) {
             curGiftCount = mSecondItemGift.getGiftCount();
+        }else {//自己的礼物不正在显示，还在队列中
+            Iterator<GiftModel> iterator = mGiftQueue.iterator();
+            while (iterator.hasNext()){
+                GiftModel giftModel = iterator.next();
+                if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserName().equals(userName)){
+                    curGiftCount = giftModel.getGiftCount();
+                    break;
+                }
+            }
+        }
+        return curGiftCount;
+    }
+
+    /**
+     * 通过获取giftId和getSendUserId当前用户giftId礼物总数
+     * @param giftId
+     * @param userId
+     * @return
+     */
+    public int getCurGiftCountByUserId(String giftId, String userId) {
+        int curGiftCount = 0;
+        GiftModel firstGift = mFirstItemGift.getGift();
+        GiftModel secondGift = mSecondItemGift.getGift();
+        if (firstGift != null && firstGift.getGiftId().equals(giftId) && firstGift.getSendUserId().equals(userId)) {
+            curGiftCount = mFirstItemGift.getGiftCount();
+        } else if (secondGift != null && secondGift.getGiftId().equals(giftId) && secondGift.getSendUserId().equals(userId)) {
+            curGiftCount = mSecondItemGift.getGiftCount();
+        }else {//自己的礼物不正在显示，还在队列中
+            Iterator<GiftModel> iterator = mGiftQueue.iterator();
+            while (iterator.hasNext()){
+                GiftModel giftModel = iterator.next();
+                if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserId().equals(userId)){
+                    curGiftCount = giftModel.getGiftCount();
+                    break;
+                }
+            }
         }
         return curGiftCount;
     }
@@ -211,10 +254,12 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (mFirstItemGift != null) {
             mFirstItemGift.clearHandler();
             mFirstItemGift.stopCheckGiftCount();
+            mFirstItemGift = null;
         }
         if (mSecondItemGift != null) {
             mSecondItemGift.clearHandler();
             mSecondItemGift.stopCheckGiftCount();
+            mSecondItemGift = null;
         }
     }
 

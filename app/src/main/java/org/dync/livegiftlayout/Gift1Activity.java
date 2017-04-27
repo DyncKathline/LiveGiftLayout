@@ -47,6 +47,7 @@ public class Gift1Activity extends AppCompatActivity {
     private GiftControl giftControl;
     private RecyclerView recyclerView;
     private GiftMsgAdapter adapter;
+    private GiftModel giftModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,7 @@ public class Gift1Activity extends AppCompatActivity {
                 mGiftPrice = giftPrice;
             }
         });
-        giftControl = new GiftControl(Gift1Activity.this);
-        giftControl.setGiftLayout(giftFrameLayout1, giftFrameLayout2);
+        giftControl = new GiftControl(giftFrameLayout1, giftFrameLayout2);
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -98,7 +98,9 @@ public class Gift1Activity extends AppCompatActivity {
                         if (giftnum == 0) {
                             return;
                         } else {
-                            giftControl.loadGift(new GiftModel(mGiftName, "礼物名字", giftnum, mGifturl, "1234", "吕靓茜", "", System.currentTimeMillis()));
+                            //这里最好不要直接new对象
+                            giftModel = new GiftModel(mGiftName, "礼物名字", giftnum, mGifturl, "1234", "吕靓茜", "", System.currentTimeMillis());
+                            giftControl.loadGift(giftModel);
                             adapter.add(mGiftName);
                         }
                     }

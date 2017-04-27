@@ -116,23 +116,19 @@ public class ExpressionUtil {
     }
 
     public void setView(Context mContext, final View view, String content) {
-        if (view instanceof ImageView) {//图片不显示GIF
+        if (view != null && view instanceof ImageView) {//图片不显示GIF
             Bitmap bitmap = null;
             try {
                 bitmap = BitmapFactory.decodeStream(mContext.getAssets().open(content));
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            if (view != null) {
-                ((ImageView) view).setImageBitmap(bitmap);
-            }
-        } else if (view instanceof TextView) {//文字可显示GIF
+            ((ImageView) view).setImageBitmap(bitmap);
+        } else if (view != null && view instanceof TextView) {//文字可显示GIF
             TextView gifTextView = (TextView) view;
             String tempText = "[" + content + "]";
             SpannableStringBuilder sb = prase(mContext, gifTextView, tempText);
-            if (view != null) {
-                gifTextView.setText(sb);
-            }
+            gifTextView.setText(sb);
         }
 
     }
@@ -144,9 +140,6 @@ public class ExpressionUtil {
      *@param staticGiftsList  @return
      */
     public void giftView(final Context context, RecyclerView recyclerView, List<GiftModel> staticGiftsList){
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.face_gridview, null);//表情布局
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
