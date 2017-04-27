@@ -5,8 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.util.Log;
 
-import org.dync.giftlibrary.util.ThreadUtil;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -99,29 +97,24 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             }
         }
         Log.d(TAG, "addGiftQueue---集合个数：" + mGiftQueue.size() + ",礼物：" + gift.getGiftId());
-        ThreadUtil.runInThread(new Runnable() {
-            @Override
-            public void run() {
-                if (supportCombo) {
-                    boolean addflag = false;
-                    for (GiftModel model : mGiftQueue) {
-                        if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
-                            Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCount());
-                            model.setGiftCount(model.getGiftCount() + gift.getGiftCount());
-                            addflag = true;
-                            break;
-                        }
-                    }
-                    //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
-                    if (!addflag) {
-                        Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCount());
-                        mGiftQueue.add(gift);
-                    }
-                } else {
-                    mGiftQueue.add(gift);
+        if (supportCombo) {
+            boolean addflag = false;
+            for (GiftModel model : mGiftQueue) {
+                if (model.getGiftId().equals(gift.getGiftId()) && model.getSendUserId().equals(gift.getSendUserId())) {
+                    Log.d(TAG, "addGiftQueue: ========已有集合========" + gift.getGiftId() + ",礼物数：" + gift.getGiftCount());
+                    model.setGiftCount(model.getGiftCount() + gift.getGiftCount());
+                    addflag = true;
+                    break;
                 }
             }
-        });
+            //如果在现有的集合中不存在同一人发的礼物就加入到现有集合中
+            if (!addflag) {
+                Log.d(TAG, "addGiftQueue: --------新的集合--------" + gift.getGiftId() + ",礼物数：" + gift.getGiftCount());
+                mGiftQueue.add(gift);
+            }
+        } else {
+            mGiftQueue.add(gift);
+        }
 
     }
 
