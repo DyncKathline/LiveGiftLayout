@@ -56,12 +56,6 @@ public class Gift1Activity extends AppCompatActivity {
         giftFrameLayout1 = (GiftFrameLayout) findViewById(R.id.gift_layout1);
         giftFrameLayout2 = (GiftFrameLayout) findViewById(R.id.gift_layout2);
 
-//        giftFrameLayout2.replaceView(R.layout.left_gift_item_layout, new GiftFrameLayout.NewViewListener() {
-//            @Override
-//            public void init(View view) {
-//
-//            }
-//        });
         showGiftMsgList();
 
         initGiftLayout();
