@@ -68,7 +68,7 @@ public class GiftAnimationUtil {
                 1.2f, 0.8f, 1f);
         PropertyValuesHolder anim6 = PropertyValuesHolder.ofFloat("alpha",
                 1.0f, 0f, 1f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, anim4, anim5, anim6).setDuration(200);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, anim4, anim5, anim6).setDuration(400);
         return animator;
 
     }

@@ -16,6 +16,10 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     private static final String TAG = "GiftControl";
     /**
+     * 自定义动画
+     */
+    private CustormAnim custormAnim;
+    /**
      * 礼物队列
      */
     private ArrayList<GiftModel> mGiftQueue;
@@ -33,6 +37,10 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     public GiftControl(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
         mGiftQueue = new ArrayList<>();
         setGiftLayout(giftFrameLayout1, giftFrameLayout2);
+    }
+
+    public void setCustormAnim(CustormAnim anim){
+        custormAnim = anim;
     }
 
     public void setGiftLayout(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
@@ -129,13 +137,13 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (!mFirstItemGift.isShowing() && mFirstItemGift.isEnd()) {
             boolean hasGift = mFirstItemGift.setGift(getGift());
             if (hasGift) {
-                mFirstItemGift.startAnimation();
+                mFirstItemGift.startAnimation(custormAnim);
             }
         }
         if (!mSecondItemGift.isShowing() && mSecondItemGift.isEnd()) {
             boolean hasGift = mSecondItemGift.setGift(getGift());
             if (hasGift) {
-                mSecondItemGift.startAnimation();
+                mSecondItemGift.startAnimation(custormAnim);
             }
         }
         Log.d(TAG, "showGift: end->集合个数：" + mGiftQueue.size());
@@ -223,7 +231,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         //动画结束，这时不能触发连击动画
         giftFrameLayout.setCurrentShowStatus(false);
         Log.d(TAG, "reStartAnimation: 动画结束");
-        AnimatorSet animatorSet = giftFrameLayout.endAnmation();
+        AnimatorSet animatorSet = giftFrameLayout.endAnmation(custormAnim);
         if (animatorSet != null) {
             animatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
