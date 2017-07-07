@@ -247,7 +247,8 @@ public class ExpressionUtil {
             String[] gifts = context.getAssets().list(ASSETS_ROOT.substring(0, ASSETS_ROOT.length() - 1));
             //将Assets中的表情名称转为字符串一一添加进staticGiftsList
             for (int i = 0; i < gifts.length; i++) {
-                giftModel = new GiftModel(ASSETS_ROOT+gifts[i], "", i+1+"");
+                giftModel = new GiftModel();
+                giftModel.setGiftName(ASSETS_ROOT+gifts[i]).setGiftPic("").setGiftPrice(i+1+"");
                 giftsList.add(giftModel);
             }
         } catch (Exception e) {

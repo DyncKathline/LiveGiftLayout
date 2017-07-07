@@ -5,140 +5,117 @@ package org.dync.giftlibrary.widget;
  */
 public class GiftModel {
 
-    private String giftId;
-    private String giftName;
-    private int giftCount;
-    private String giftPic;
-    private String giftPrice;
-    private String sendUserId;
-    private String sendUserName;
-    private String sendUserPic;
-    private String hitCombo;
-    private Long sendGiftTime;
-
-    public static GiftModel create(String giftId, String giftName, int giftCont, String giftPic, String sendUserId,
-                                   String sendUserName, String sendUserPic) {
-        GiftModel giftModel = new GiftModel();
-        giftModel.setGiftId(giftId);
-        giftModel.setGiftName(giftName);
-        giftModel.setGiftCount(giftCont);
-        giftModel.setGiftPic(giftPic);
-        giftModel.setSendUserId(sendUserId);
-        giftModel.setSendUserName(sendUserName);
-        giftModel.setSendUserPic(sendUserPic);
-        return giftModel;
-    }
+    private String giftId;//礼物的id
+    private String giftName;//礼物的名字
+    private int giftCount;//一次发送礼物的数量
+    private String giftPic;//礼物的图片
+    private String giftPrice;//礼物的价格
+    private String sendUserId;//发送者的id
+    private String sendUserName;//发送者的名字
+    private String sendUserPic;//发送者的头像
+    private int hitCombo;//上一次要连击的礼物数
+    private Long sendGiftTime;//发送礼物的时间
+    private boolean currentStart;//是否从当前数开始连击
 
     public GiftModel() {
-    }
-
-    /**
-     * 礼物面板
-     * @param giftName
-     * @param giftPic
-     */
-    public GiftModel(String giftName, String giftPic, String giftPrice){
-        setGiftName(giftName);
-        setGiftPic(giftPic);
-        setGiftPrice(giftPrice);
-    }
-
-    public GiftModel(String giftId, String giftName, int giftCont, String giftPic, String sendUserId,
-                     String sendUserName, String sendUserPic, Long sendGiftTime) {
-        setGiftId(giftId);
-        setGiftName(giftName);
-        setGiftCount(giftCont);
-        setGiftPic(giftPic);
-        setSendUserId(sendUserId);
-        setSendUserName(sendUserName);
-        setSendUserPic(sendUserPic);
-        setSendGiftTime(sendGiftTime);
-    }
-
-    public GiftModel(String giftId, String sendUserName, String sendUserPic, int giftCont) {
-        setGiftId(giftId);
-        setSendUserName(sendUserName);
-        setSendUserPic(sendUserPic);
-        setGiftCount(giftCont);
     }
 
     public String getGiftId() {
         return giftId;
     }
 
-    public void setGiftId(String giftId) {
+    public GiftModel setGiftId(String giftId) {
         this.giftId = giftId;
+        return this;
     }
 
     public String getGiftName() {
         return giftName;
     }
 
-    public void setGiftName(String giftName) {
+    public GiftModel setGiftName(String giftName) {
         this.giftName = giftName;
+        return this;
     }
 
     public int getGiftCount() {
         return giftCount;
     }
 
-    public void setGiftCount(int giftCount) {
+    public GiftModel setGiftCount(int giftCount) {
         this.giftCount = giftCount;
+        return this;
     }
 
     public String getSendUserId() {
         return sendUserId;
     }
 
-    public void setSendUserId(String sendUserId) {
+    public GiftModel setSendUserId(String sendUserId) {
         this.sendUserId = sendUserId;
+        return this;
     }
 
     public String getSendUserName() {
         return sendUserName;
     }
 
-    public void setSendUserName(String sendUserName) {
+    public GiftModel setSendUserName(String sendUserName) {
         this.sendUserName = sendUserName;
+        return this;
     }
 
     public String getSendUserPic() {
         return sendUserPic;
     }
 
-    public void setSendUserPic(String sendUserPic) {
+    public GiftModel setSendUserPic(String sendUserPic) {
         this.sendUserPic = sendUserPic;
+        return this;
     }
 
     public String getGiftPic() {
         return giftPic;
     }
 
-    public void setGiftPic(String giftPic) {
+    public GiftModel setGiftPic(String giftPic) {
         this.giftPic = giftPic;
+        return this;
     }
 
     public String getGiftPrice() {
         return giftPrice;
     }
 
-    public void setGiftPrice(String giftPrice) {
+    public GiftModel setGiftPrice(String giftPrice) {
         this.giftPrice = giftPrice;
+        return this;
     }
 
-    public String getHitCombo() {
+    public int getHitCombo() {
         return hitCombo;
     }
 
-    public void setHitCombo(String hitCombo) {
+    public GiftModel setHitCombo(int hitCombo) {
         this.hitCombo = hitCombo;
+        return this;
     }
 
     public Long getSendGiftTime() {
         return sendGiftTime;
     }
 
-    public void setSendGiftTime(Long sendGiftTime) {
+    public GiftModel setSendGiftTime(Long sendGiftTime) {
         this.sendGiftTime = sendGiftTime;
+        return this;
+    }
+
+    public boolean isCurrentStart() {
+        return currentStart;
+    }
+
+    public GiftModel setCurrentStart(boolean currentStart) {
+        this.currentStart = currentStart;
+        return this;
     }
 }

@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class Gift1Activity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private GiftMsgAdapter adapter;
     private GiftModel giftModel;
+    private boolean currentStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class Gift1Activity extends AppCompatActivity {
 
         initGiftLayout();
 
-        List<GiftBean.GiftListBean> giftListBeen = fromNetData();//来自网络礼物图片
+        final List<GiftBean.GiftListBean> giftListBeen = fromNetData();//来自网络礼物图片
         List<GiftModel> giftModels = toGiftModel(giftListBeen);//转化为发送礼物的集合
 
         GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
@@ -95,7 +98,13 @@ public class Gift1Activity extends AppCompatActivity {
                             return;
                         } else {
                             //这里最好不要直接new对象
-                            giftModel = new GiftModel(mGiftName, "礼物名字", giftnum, mGifturl, "1234", "吕靓茜", "", System.currentTimeMillis());
+                            giftModel = new GiftModel();
+                            giftModel.setGiftId(mGiftName).setGiftName("礼物名字").setGiftCount(giftnum).setGiftPic(mGifturl)
+                                    .setSendUserId("1234").setSendUserName("吕靓茜").setSendUserPic("").setSendGiftTime(System.currentTimeMillis())
+                                    .setCurrentStart(currentStart);
+                            if(currentStart){
+                                giftModel.setHitCombo(giftnum);
+                            }
                             giftControl.loadGift(giftModel);
                             adapter.add(mGiftName);
                         }
@@ -111,6 +120,13 @@ public class Gift1Activity extends AppCompatActivity {
                 } else {
                     giftLayout.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+        CheckBox rbCurrentStart = (CheckBox) findViewById(R.id.rb_currentStart);
+        rbCurrentStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                currentStart = isChecked;
             }
         });
     }
@@ -135,7 +151,8 @@ public class Gift1Activity extends AppCompatActivity {
         GiftModel giftModel;
         for (int i = 0; i < datas.size(); i++){
             GiftBean.GiftListBean giftListBean = datas.get(i);
-            giftModel = new GiftModel(giftListBean.getGiftName(), giftListBean.getGiftPic(), giftListBean.getGiftPrice());
+            giftModel = new GiftModel();
+            giftModel.setGiftName(giftListBean.getGiftName()).setGiftPic(giftListBean.getGiftPic()).setGiftPrice(giftListBean.getGiftPrice());
             giftModels.add(giftModel);
         }
         return giftModels;

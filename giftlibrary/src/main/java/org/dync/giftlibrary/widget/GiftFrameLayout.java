@@ -83,13 +83,13 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      */
     private boolean isShowing = false;
     /**
-     * 自定义动画的接口
-     */
-    private ICustormAnim anim;
-    /**
      * 礼物动画结束
      */
     private boolean isEnd = true;
+    /**
+     * 自定义动画的接口
+     */
+    private ICustormAnim anim;
     private LeftGiftAnimationStatusListener mGiftAnimationListener;
     private View rootView;
 
@@ -144,8 +144,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             return false;
         }
         mGift = gift;
-        if (0 != gift.getGiftCount()) {
-            this.mGiftCount = gift.getGiftCount();
+
+        if(mGift.isCurrentStart()){
+            mGiftCount = gift.getGiftCount() + mGift.getHitCombo();
+        }else {
+            mGiftCount = gift.getGiftCount();
         }
         if (!TextUtils.isEmpty(gift.getSendUserName())) {
             anim_nickname.setText(gift.getSendUserName());
@@ -361,6 +364,35 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         this.setAlpha(1f);
         isShowing = true;
         isEnd = false;
+
+        if (mGift.getSendUserPic().equals("")){
+            Glide.with(mContext).load(R.mipmap.icon).transform(new GlideCircleTransform(mContext)).into(anim_header);
+        }else {
+            Glide.with(mContext).load(mGift.getSendUserPic()).transform(new GlideCircleTransform(mContext)).into(anim_header);
+        }
+        if(mGift.isCurrentStart()){
+            mCombo = mGift.getHitCombo();
+        }
+        anim_num.setText("x " + mCombo);
+
+        if (!mGift.getGiftPic().equals("")){
+            Glide.with(mContext).load(mGift.getGiftPic()).placeholder(R.mipmap.loading).into(new SimpleTarget<GlideDrawable>() {
+                @Override
+                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    anim_gift.setImageDrawable(resource);
+                }
+            });
+        }else {
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContext().getAssets().open(mGift.getGiftId()));
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            anim_gift.setImageDrawable(new BitmapDrawable(bitmap));
+//        anim_gift.setImageBitmap(bitmap);
+        }
     }
 
     /**
@@ -389,33 +421,8 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
                     initLayoutState();
-                    if (mGift.getSendUserPic().equals("")){
-                        Glide.with(mContext).load(R.mipmap.icon).transform(new GlideCircleTransform(mContext)).into(anim_header);
-                    }else {
-                        Glide.with(mContext).load(mGift.getSendUserPic()).transform(new GlideCircleTransform(mContext)).into(anim_header);
-                    }
-
-                    anim_num.setText("x " + mCombo);
                 }
             });
-            if (!mGift.getGiftPic().equals("")){
-                Glide.with(mContext).load(mGift.getGiftPic()).placeholder(R.mipmap.loading).into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        anim_gift.setImageDrawable(resource);
-                    }
-                });
-            }else {
-                Bitmap bitmap = null;
-                try {
-                    bitmap = BitmapFactory.decodeStream(getContext().getAssets().open(mGift.getGiftId()));
-
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-                anim_gift.setImageDrawable(new BitmapDrawable(bitmap));
-//        anim_gift.setImageBitmap(bitmap);
-            }
 
             //礼物飞入
             ObjectAnimator flyFromLtoR2 = GiftAnimationUtil.createFlyFromLtoR(anim_gift, -getWidth(), 0, 400, new DecelerateInterpolator());

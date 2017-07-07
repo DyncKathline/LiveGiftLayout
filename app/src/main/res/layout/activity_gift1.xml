@@ -40,6 +40,14 @@
         android:layout_marginTop="20dp"
         android:text="礼物面板显示/隐藏" />
 
+    <CheckBox
+        android:id="@+id/rb_currentStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/action"
+        android:layout_centerHorizontal="true"
+        android:text="是否使用当前礼物数开始显示" />
+
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
