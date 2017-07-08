@@ -77,8 +77,9 @@ public class Gift1Activity extends AppCompatActivity {
                 mGiftPrice = giftPrice;
             }
         });
-        giftControl = new GiftControl(giftFrameLayout1, giftFrameLayout2);
-        giftControl.setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
+        giftControl = new GiftControl();
+        giftControl.setGiftLayout(true, giftFrameLayout1, giftFrameLayout2)
+                .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {

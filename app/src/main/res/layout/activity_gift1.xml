@@ -46,6 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/action"
         android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:shadowColor="@color/black"
+        android:shadowRadius="10"
+        android:shadowDx="5"
+        android:shadowDy="10"
+        android:textSize="20sp"
         android:text="是否使用当前礼物数开始显示" />
 
     <LinearLayout

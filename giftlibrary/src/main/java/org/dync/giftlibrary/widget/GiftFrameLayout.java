@@ -90,6 +90,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * 自定义动画的接口
      */
     private ICustormAnim anim;
+    /**
+     * 是否开启礼物动画隐藏模式（如果两个礼物动画同时显示，并且第一个优先结束，第二个礼物的位置会移动到第一个位置上去）
+     */
+    private boolean isHideMode = false;
+
     private LeftGiftAnimationStatusListener mGiftAnimationListener;
     private View rootView;
 
@@ -133,10 +138,23 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         animator.start();
     }
 
+    public void setHideMode(boolean isHideMode){
+        this.isHideMode = isHideMode;
+    }
+
     public void hideView() {
         anim_gift.setVisibility(INVISIBLE);
         anim_light.setVisibility(INVISIBLE);
         anim_num.setVisibility(INVISIBLE);
+    }
+
+    public void setGiftViewEndVisibility() {
+
+        if(isHideMode){
+            GiftFrameLayout.this.setVisibility(View.GONE);
+        }else {
+            GiftFrameLayout.this.setVisibility(View.INVISIBLE);
+        }
     }
 
     public boolean setGift(GiftModel gift) {
@@ -477,7 +495,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     anim_num.setVisibility(View.INVISIBLE);
-                    GiftFrameLayout.this.setVisibility(View.INVISIBLE);
+                    setGiftViewEndVisibility();
                 }
             });
             // 复原
@@ -489,5 +507,4 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             return anim.endAnim(this, rootView);
         }
     }
-
 }

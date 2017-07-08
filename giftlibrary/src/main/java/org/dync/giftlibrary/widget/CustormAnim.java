@@ -64,7 +64,7 @@ public class CustormAnim implements ICustormAnim {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                giftFrameLayout.setVisibility(View.INVISIBLE);
+                giftFrameLayout.setGiftViewEndVisibility();
             }
         });
         // 复原

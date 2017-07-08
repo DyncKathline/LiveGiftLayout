@@ -34,16 +34,17 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
      */
     private GiftFrameLayout mSecondItemGift;
 
-    public GiftControl(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
+    public GiftControl() {
         mGiftQueue = new ArrayList<>();
-        setGiftLayout(giftFrameLayout1, giftFrameLayout2);
     }
 
-    public void setCustormAnim(CustormAnim anim){
+    public GiftControl setCustormAnim(CustormAnim anim){
         custormAnim = anim;
+
+        return this;
     }
 
-    public void setGiftLayout(GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
+    public GiftControl setGiftLayout(boolean isHideMode, GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
         mFirstItemGift = giftFrameLayout1;
         mSecondItemGift = giftFrameLayout2;
 
@@ -55,6 +56,11 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
         mFirstItemGift.setGiftAnimationListener(this);
         mSecondItemGift.setGiftAnimationListener(this);
+
+        mFirstItemGift.setHideMode(isHideMode);
+        mSecondItemGift.setHideMode(isHideMode);
+
+        return this;
     }
 
     public void loadGift(GiftModel gift) {
