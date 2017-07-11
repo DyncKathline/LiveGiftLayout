@@ -245,6 +245,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                     Log.i(TAG, "礼物动画dismiss: index = " + index);
                     //动画完全结束
                     giftFrameLayout.CurrentEndStatus(true);
+                    giftFrameLayout.setGiftViewEndVisibility(isEmpty());
                     showGift();
                 }
             });

@@ -148,9 +148,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         anim_num.setVisibility(INVISIBLE);
     }
 
-    public void setGiftViewEndVisibility() {
+    public void setGiftViewEndVisibility(boolean hasGift) {
 
-        if(isHideMode){
+        if(isHideMode && hasGift){
             GiftFrameLayout.this.setVisibility(View.GONE);
         }else {
             GiftFrameLayout.this.setVisibility(View.INVISIBLE);
@@ -495,7 +495,6 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     anim_num.setVisibility(View.INVISIBLE);
-                    setGiftViewEndVisibility();
                 }
             });
             // 复原
