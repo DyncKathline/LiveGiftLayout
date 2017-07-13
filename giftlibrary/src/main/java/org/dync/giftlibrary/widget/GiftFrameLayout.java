@@ -31,8 +31,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import org.dync.giftlibrary.R;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -44,6 +42,13 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     private LayoutInflater mInflater;
     private Context mContext;
     private Handler mHandler = new Handler(this);
+    private Handler comboHandler = new Handler(this);
+    private Runnable runnable;
+    /**
+     * 实时监测礼物数量
+     */
+//    private Subscription mSubscribe;
+//    private Timer mTimer;
     private static final int RESTART_GIFT_ANIMATION_CODE = 1002;
     /**
      * 礼物展示时间
@@ -73,11 +78,6 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * 当前播放连击数
      */
     private int mCombo = 1;
-    /**
-     * 实时监测礼物数量
-     */
-//    private Subscription mSubscribe;
-    private Timer mTimer;
     /**
      * 礼物动画正在显示，在这期间可触发连击效果
      */
@@ -328,16 +328,27 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * </pre>
      */
     private void checkGiftCountSubscribe() {
-        TimerTask task = new TimerTask() {
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (mGiftCount > mCombo) {
+//                    mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
+//                }
+//            }
+//        };
+//        mTimer = new Timer();
+//        mTimer.schedule(task, 0, INTERVAL);
+
+        runnable = new Runnable(){
             @Override
             public void run() {
                 if (mGiftCount > mCombo) {
                     mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
                 }
+                comboHandler.postDelayed(runnable, INTERVAL);
             }
         };
-        mTimer = new Timer();
-        mTimer.schedule(task, 0, INTERVAL);
+        comboHandler.postDelayed(runnable, INTERVAL);
 
 //        if (mSubscribe == null || mSubscribe.isUnsubscribed()) {
 //            mSubscribe = Observable.interval(INTERVAL, TimeUnit.MILLISECONDS).map(new Func1<Long, Void>() {
@@ -360,9 +371,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     public void stopCheckGiftCount() {
-        if (mTimer != null) {
-            mTimer.cancel();
-        }
+//        if (mTimer != null) {
+//            mTimer.cancel();
+//        }
+        comboHandler.removeCallbacksAndMessages(null);
+
 //        if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
 //            mSubscribe.unsubscribe();
 //        }
@@ -372,6 +385,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         mHandler.removeCallbacksAndMessages(null);
         mHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
         mGiftAnimationListener = null;
+
+        comboHandler.removeCallbacksAndMessages(null);
+        comboHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
     }
 
     /**
