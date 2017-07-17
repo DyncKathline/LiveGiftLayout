@@ -1,6 +1,6 @@
 QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.csdn.net/DyncKathline/article/details/55682053)  
 ## [更新日志](https://github.com/DyncKathline/LiveGiftLayout/wiki)  
-首先先上图  
+首先先上图   
 ![image](https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/173ee2616f8e17d7971d766120d992a3f2a3d829/screenshot/GIF.gif)  
 ### 个人建议使用Gift1Activity项目中的库，Gift2Activity项目中的库后面不怎么维护了  
 ### 1：到[GitHub](https://github.com/DyncKathline/LiveGiftLayout) 把项目clone到本地。  
