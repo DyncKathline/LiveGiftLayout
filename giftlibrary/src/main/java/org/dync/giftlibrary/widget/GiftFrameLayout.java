@@ -315,7 +315,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     /**
      * <pre>
      * 这里不能GIFT_DISMISS_TIME % INVISIBLE == 0,
-     * 因为余数为0的话，说明在这个时刻即执行了{@link GiftControl#reStartAnimation(GiftFrameLayout, int)}移除动画{@link #endAnmation(CustormAnim)},也执行了检查监听连击动作。
+     * 因为余数为0的话，说明在这个时刻即执行了{@link GiftControl#reStartAnimation(GiftFrameLayout, int)}移除动画{@link #endAnmation(ICustormAnim)},也执行了检查监听连击动作。
      * 这导致就会出现在礼物动画消失的一瞬间，点击连击会出现如下日志出现的情况（已经触发连击了，但是礼物的动画已经结束了）：
      * 02-18 20:45:57.900 9060-9060/org.dync.livegiftlayout D/GiftControl: addGiftQueue---集合个数：0,礼物：p/000.png
      * 02-18 20:45:57.900 9060-9060/org.dync.livegiftlayout D/GiftControl: showGift: begin->集合个数：1
@@ -502,7 +502,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         }
     }
 
-    public AnimatorSet endAnmation(CustormAnim anim) {
+    public AnimatorSet endAnmation(ICustormAnim anim) {
         if(anim == null){
             //向上渐变消失
             ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 0, -100, 500, 0);

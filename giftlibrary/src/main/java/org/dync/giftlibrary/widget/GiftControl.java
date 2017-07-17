@@ -3,10 +3,13 @@ package org.dync.giftlibrary.widget;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by KathLine on 2017/1/8.
@@ -18,48 +21,37 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     /**
      * 自定义动画
      */
-    private CustormAnim custormAnim;
+    private ICustormAnim custormAnim;
     /**
      * 礼物队列
      */
     private ArrayList<GiftModel> mGiftQueue;
 
     /**
-     * 礼物1
+     * 礼物数量集合
      */
-    private GiftFrameLayout mFirstItemGift;
-
-    /**
-     * 礼物2
-     */
-    private GiftFrameLayout mSecondItemGift;
+    private SparseArray<GiftFrameLayout> mGiftLayoutList;
 
     public GiftControl() {
         mGiftQueue = new ArrayList<>();
     }
 
-    public GiftControl setCustormAnim(CustormAnim anim){
+    public GiftControl setCustormAnim(ICustormAnim anim){
         custormAnim = anim;
 
         return this;
     }
-
-    public GiftControl setGiftLayout(boolean isHideMode, GiftFrameLayout giftFrameLayout1, GiftFrameLayout giftFrameLayout2) {
-        mFirstItemGift = giftFrameLayout1;
-        mSecondItemGift = giftFrameLayout2;
-
-        mFirstItemGift.setIndex(0);
-        mSecondItemGift.setIndex(1);
-
-        mFirstItemGift.firstHideLayout();
-        mSecondItemGift.firstHideLayout();
-
-        mFirstItemGift.setGiftAnimationListener(this);
-        mSecondItemGift.setGiftAnimationListener(this);
-
-        mFirstItemGift.setHideMode(isHideMode);
-        mSecondItemGift.setHideMode(isHideMode);
-
+    
+    public GiftControl setGiftLayout(boolean isHideMode, @NonNull SparseArray<GiftFrameLayout> giftLayoutList){
+        mGiftLayoutList = giftLayoutList;
+        GiftFrameLayout giftFrameLayout;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            giftFrameLayout.setIndex(i);
+            giftFrameLayout.firstHideLayout();
+            giftFrameLayout.setGiftAnimationListener(this);
+            giftFrameLayout.setHideMode(isHideMode);
+        }
         return this;
     }
 
@@ -76,23 +68,17 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     public void loadGift(GiftModel gift, boolean supportCombo) {
         if (mGiftQueue != null) {
             if (supportCombo) {
-                if (mFirstItemGift.isShowing()) {
-                    if (mFirstItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mFirstItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
-                        //连击
-                        Log.i(TAG, "addGiftQueue: ========mFirstItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
-                        mFirstItemGift.setGiftCount(gift.getGiftCount());
-                        mFirstItemGift.setSendGiftTime(gift.getSendGiftTime());
-                        return;
-                    }
-                }
-
-                if (mSecondItemGift.isShowing()) {
-                    if (mSecondItemGift.getCurrentGiftId().equals(gift.getGiftId()) && mSecondItemGift.getCurrentSendUserId().equals(gift.getSendUserId())) {
-                        //连击
-                        Log.i(TAG, "addGiftQueue: ========mSecondItemGift连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
-                        mSecondItemGift.setGiftCount(gift.getGiftCount());
-                        mSecondItemGift.setSendGiftTime(gift.getSendGiftTime());
-                        return;
+                GiftFrameLayout giftFrameLayout;
+                for (int i = 0; i < mGiftLayoutList.size(); i++) {
+                    giftFrameLayout = mGiftLayoutList.get(i);
+                    if(giftFrameLayout.isShowing()){
+                        if (giftFrameLayout.getCurrentGiftId().equals(gift.getGiftId()) && giftFrameLayout.getCurrentSendUserId().equals(gift.getSendUserId())) {
+                            //连击
+                            Log.i(TAG, "addGiftQueue: ========giftFrameLayout("+ giftFrameLayout.getIndex()+")连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
+                            giftFrameLayout.setGiftCount(gift.getGiftCount());
+                            giftFrameLayout.setSendGiftTime(gift.getSendGiftTime());
+                            return;
+                        }
                     }
                 }
             }
@@ -139,20 +125,18 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (isEmpty()) {
             return;
         }
-        Log.d(TAG, "showGift: begin->集合个数：" + mGiftQueue.size());
-        if (!mFirstItemGift.isShowing() && mFirstItemGift.isEnd()) {
-            boolean hasGift = mFirstItemGift.setGift(getGift());
-            if (hasGift) {
-                mFirstItemGift.startAnimation(custormAnim);
+        GiftFrameLayout giftFrameLayout;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            Log.d(TAG, "showGift: begin->集合个数：" + mGiftQueue.size());
+            if (!giftFrameLayout.isShowing() && giftFrameLayout.isEnd()) {
+                boolean hasGift = giftFrameLayout.setGift(getGift());
+                if (hasGift) {
+                    giftFrameLayout.startAnimation(custormAnim);
+                }
             }
+            Log.d(TAG, "showGift: end->集合个数：" + mGiftQueue.size());
         }
-        if (!mSecondItemGift.isShowing() && mSecondItemGift.isEnd()) {
-            boolean hasGift = mSecondItemGift.setGift(getGift());
-            if (hasGift) {
-                mSecondItemGift.startAnimation(custormAnim);
-            }
-        }
-        Log.d(TAG, "showGift: end->集合个数：" + mGiftQueue.size());
     }
 
     /**
@@ -171,33 +155,6 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
     }
 
     /**
-     * 通过获取giftId和getSendUserName当前用户giftId礼物总数
-     * @param giftId
-     * @param userName
-     * @return
-     */
-    public int getCurGiftCount(String giftId, String userName) {
-        int curGiftCount = 0;
-        GiftModel firstGift = mFirstItemGift.getGift();
-        GiftModel secondGift = mSecondItemGift.getGift();
-        if (firstGift != null && firstGift.getGiftId().equals(giftId) && firstGift.getSendUserName().equals(userName)) {
-            curGiftCount = mFirstItemGift.getGiftCount();
-        } else if (secondGift != null && secondGift.getGiftId().equals(giftId) && secondGift.getSendUserName().equals(userName)) {
-            curGiftCount = mSecondItemGift.getGiftCount();
-        }else {//自己的礼物不正在显示，还在队列中
-            Iterator<GiftModel> iterator = mGiftQueue.iterator();
-            while (iterator.hasNext()){
-                GiftModel giftModel = iterator.next();
-                if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserName().equals(userName)){
-                    curGiftCount = giftModel.getGiftCount();
-                    break;
-                }
-            }
-        }
-        return curGiftCount;
-    }
-
-    /**
      * 通过获取giftId和getSendUserId当前用户giftId礼物总数
      * @param giftId
      * @param userId
@@ -205,31 +162,67 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
      */
     public int getCurGiftCountByUserId(String giftId, String userId) {
         int curGiftCount = 0;
-        GiftModel firstGift = mFirstItemGift.getGift();
-        GiftModel secondGift = mSecondItemGift.getGift();
-        if (firstGift != null && firstGift.getGiftId().equals(giftId) && firstGift.getSendUserId().equals(userId)) {
-            curGiftCount = mFirstItemGift.getGiftCount();
-        } else if (secondGift != null && secondGift.getGiftId().equals(giftId) && secondGift.getSendUserId().equals(userId)) {
-            curGiftCount = mSecondItemGift.getGiftCount();
-        }else {//自己的礼物不正在显示，还在队列中
-            Iterator<GiftModel> iterator = mGiftQueue.iterator();
-            while (iterator.hasNext()){
-                GiftModel giftModel = iterator.next();
-                if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserId().equals(userId)){
-                    curGiftCount = giftModel.getGiftCount();
-                    break;
+        GiftFrameLayout giftFrameLayout;
+        GiftModel giftModel;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            giftModel = giftFrameLayout.getGift();
+            if (giftModel != null && giftModel.getGiftId().equals(giftId) && giftModel.getSendUserId().equals(userId)) {
+                curGiftCount = giftModel.getGiftCount();
+            } else {//自己的礼物不正在显示，还在队列中
+                Iterator<GiftModel> iterator = mGiftQueue.iterator();
+                while (iterator.hasNext()){
+                    giftModel = iterator.next();
+                    if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserId().equals(userId)){
+                        curGiftCount = giftModel.getGiftCount();
+                        break;
+                    }
                 }
             }
         }
         return curGiftCount;
     }
 
+    /**
+     * 获取正在展示礼物的个数（即GiftFragmeLayout展示的个数）
+     * @return
+     */
+    public int getShowingGiftLayoutCount(){
+        int count = 0;
+        GiftFrameLayout giftFrameLayout;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            if(giftFrameLayout.isShowing()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 获取正在展示礼物的个数实例（即GiftFragmeLayout展示的个数实例）
+     * @return
+     */
+    public List<GiftFrameLayout> getShowingGiftLayouts(){
+        List<GiftFrameLayout> giftLayoutList = new ArrayList<>();
+        GiftFrameLayout giftFrameLayout;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            if(giftFrameLayout.isShowing()){
+                giftLayoutList.add(giftFrameLayout);
+            }
+        }
+        return giftLayoutList;
+    }
+
     @Override
     public void dismiss(int index) {
-        if (index == 0) {
-            reStartAnimation(mFirstItemGift, index);
-        } else if (index == 1) {
-            reStartAnimation(mSecondItemGift, index);
+        GiftFrameLayout giftFrameLayout;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            if(giftFrameLayout.getIndex() == index){
+                reStartAnimation(giftFrameLayout, giftFrameLayout.getIndex());
+            }
         }
     }
 
@@ -259,15 +252,12 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (mGiftQueue != null) {
             mGiftQueue.clear();
         }
-        if (mFirstItemGift != null) {
-            mFirstItemGift.clearHandler();
-//            mFirstItemGift.stopCheckGiftCount();
-            mFirstItemGift = null;
-        }
-        if (mSecondItemGift != null) {
-            mSecondItemGift.clearHandler();
-//            mSecondItemGift.stopCheckGiftCount();
-            mSecondItemGift = null;
+        GiftFrameLayout giftFrameLayout;
+        for (int i = 0; i < mGiftLayoutList.size(); i++) {
+            giftFrameLayout = mGiftLayoutList.get(i);
+            if(giftFrameLayout != null){
+                giftFrameLayout.clearHandler();
+            }
         }
     }
 

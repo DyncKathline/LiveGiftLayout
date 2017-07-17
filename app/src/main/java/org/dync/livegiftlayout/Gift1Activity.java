@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -34,6 +36,7 @@ public class Gift1Activity extends AppCompatActivity {
 
     private GiftFrameLayout giftFrameLayout1;
     private GiftFrameLayout giftFrameLayout2;
+    private GiftFrameLayout giftFrameLayout3;
 
     private LinearLayout giftLayout;
     private LinearLayout ll_portrait;
@@ -59,6 +62,7 @@ public class Gift1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_gift1);
         giftFrameLayout1 = (GiftFrameLayout) findViewById(R.id.gift_layout1);
         giftFrameLayout2 = (GiftFrameLayout) findViewById(R.id.gift_layout2);
+        giftFrameLayout3 = (GiftFrameLayout) findViewById(R.id.gift_layout3);
 
         showGiftMsgList();
 
@@ -78,7 +82,11 @@ public class Gift1Activity extends AppCompatActivity {
             }
         });
         giftControl = new GiftControl();
-        giftControl.setGiftLayout(true, giftFrameLayout1, giftFrameLayout2)
+        SparseArray<GiftFrameLayout> giftLayoutList = new SparseArray<>();
+        giftLayoutList.append(0, giftFrameLayout1);
+        giftLayoutList.append(1, giftFrameLayout2);
+        giftLayoutList.append(2, giftFrameLayout3);
+        giftControl.setGiftLayout(false, giftLayoutList)
                 .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +116,7 @@ public class Gift1Activity extends AppCompatActivity {
                             }
                             giftControl.loadGift(giftModel);
                             adapter.add(mGiftName);
+                            Log.d("TAG", "onClick: " + giftControl.getShowingGiftLayoutCount());
                         }
                     }
                 }
