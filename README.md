@@ -57,26 +57,41 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
 </RelativeLayout>
 
 ```
-上面的GiftFrameLayout是展示礼物的控件，我这里仅展示两条，你可以添加多个礼物同时展示，但是你需要GiftControl类中相应的修改代码来实现。同时礼物面板可以使用DialogFragment来替代我这里。  
+上面的GiftFrameLayout是展示礼物的控件，我这里仅展示两条，你可以添加多个礼物同时展示，但是你需要GiftControl类中相应的修改代码来实现。同时礼物面板可以使用DialogFragment来替代我这里。
+  
 ### 4：在activity中找到控件后就可以初始化礼物模块了。  
 **a.礼物面板**。  
+
 代码如下：  
+这里如果想使用本地的礼物图片直接使用  
+giftPanelControl.init(null);//这里如果为null则加载本地礼物图片
 
 ```
-GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
+ GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
+        giftPanelControl.init(giftModels);//这里如果为null则加载本地礼物图片
         giftPanelControl.setGiftListener(new GiftPanelControl.GiftListener() {
             @Override
-            public void getGiftStr(String giftStr) {
-                giftstr = giftStr;
+            public void getGiftInfo(String giftPic, String giftName, String giftPrice) {
+                mGifturl = giftPic;
+                mGiftName = giftName;
+                mGiftPrice = giftPrice;
             }
         });
 ```
-这里的giftStr参数我传的是资源文件中图片的名称，你也可以传的是图片的id。  
+这里的giftPic参数我传的是资源文件中图片的名称，你也可以传的是图片的id。  
+
 **b.展示礼物**  
 
+这里的setGiftLayout(false, giftLayoutList)方法，参数一：是否开启上面的礼物轨道消失后下面的礼物轨道会移上去模式，true是开启，false是关闭；  
+参数二：礼物轨道的数量。  
+setCustormAnim(new CustormAnim())方法，对礼物的动画可以进行扩展，可以在不修改源码的情况下定制属于你的效果。
 ```
-giftControl = new GiftControl(Gift1Activity.this);
-        giftControl.setGiftLayout(giftFrameLayout1, giftFrameLayout2);
+        giftControl = new GiftControl();
+        SparseArray<GiftFrameLayout> giftLayoutList = new SparseArray<>();
+        giftLayoutList.append(0, giftFrameLayout1);
+        giftLayoutList.append(1, giftFrameLayout2);
+        giftControl.setGiftLayout(false, giftLayoutList)
+                .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
 ```
 **c.显示礼物数量的面板**  
 
@@ -89,6 +104,10 @@ tvGiftNum.setOnClickListener(new View.OnClickListener() {
         });
 ```  
 **d.礼物面板中发送按钮发送礼物的操作**  
+
+如果你想要从某个礼物数开始连击，你可以在giftControl.loadGift(giftModel);前创建的GiftModel设置setCurrentStart(true)和setHitCombo(giftnum)，  
+这样就可以实现了。  
+温馨提示：这里的setCurrentStart()方法必须设置为true，setHitCombo()方法才能生效哦。  
 
 ```
 btnGift.setOnClickListener(new View.OnClickListener() {
