@@ -57,7 +57,7 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
 </RelativeLayout>
 
 ```
-上面的GiftFrameLayout是展示礼物的控件，我这里仅展示两条，你可以添加多个礼物同时展示，但是你需要GiftControl类中相应的修改代码来实现。同时礼物面板可以使用DialogFragment来替代我这里。
+上面的GiftFrameLayout是展示礼物的控件，我这里仅展示两条，你可以添加多个礼物同时展示。同时礼物面板可以使用DialogFragment来替代我这里。
   
 ### 4：在activity中找到控件后就可以初始化礼物模块了。  
 **a.礼物面板**。  
