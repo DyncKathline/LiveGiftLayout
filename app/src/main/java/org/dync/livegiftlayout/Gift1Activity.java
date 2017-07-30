@@ -139,6 +139,27 @@ public class Gift1Activity extends AppCompatActivity {
                 currentStart = isChecked;
             }
         });
+
+        
+        findViewById(R.id.btn_clear_gift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (giftControl != null) {
+                    giftControl.cleanAll();
+                }
+            }
+        });
+        final LinearLayout giftParent = (LinearLayout) findViewById(R.id.ll_gift_parent);
+        findViewById(R.id.btn_hide_gift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (giftParent.getVisibility() == View.VISIBLE) {
+                    giftParent.setVisibility(View.GONE);
+                } else {
+                    giftParent.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     //模拟从网络获取礼物url的集合
@@ -192,6 +213,7 @@ public class Gift1Activity extends AppCompatActivity {
                 //这里的作用是消费掉点击事件
             }
         });
+        giftLayout.setVisibility(View.GONE);
     }
 
     private void showGiftDialog() {

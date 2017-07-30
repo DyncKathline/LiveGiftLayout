@@ -382,12 +382,16 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     public void clearHandler() {
-        mHandler.removeCallbacksAndMessages(null);
-        mHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
+        if(mHandler != null){
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
+        }
         mGiftAnimationListener = null;
 
-        comboHandler.removeCallbacksAndMessages(null);
-        comboHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
+        if(comboHandler != null){
+            comboHandler.removeCallbacksAndMessages(null);
+            comboHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
+        }
     }
 
     /**
