@@ -41,8 +41,8 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     private static final String TAG = "GiftFrameLayout";
     private LayoutInflater mInflater;
     private Context mContext;
-    private Handler mHandler = new Handler(this);
-    private Handler comboHandler = new Handler(this);
+    private Handler mHandler = new Handler(this);//连击handler
+    private Handler comboHandler = new Handler(this);//检查连击handler
     private Runnable runnable;
     /**
      * 实时监测礼物数量
@@ -106,13 +106,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         super(context, attrs);
         mInflater = LayoutInflater.from(context);
         mContext = context;
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
         initView();
     }
+
+//    @Override
+//    protected void onFinishInflate() {
+//        super.onFinishInflate();
+//        initView();
+//    }
 
     private void initView() {
         rootView = mInflater.inflate(R.layout.item_gift, null);
@@ -138,7 +139,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         animator.start();
     }
 
-    public void setHideMode(boolean isHideMode){
+    public void setHideMode(boolean isHideMode) {
         this.isHideMode = isHideMode;
     }
 
@@ -150,9 +151,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     public void setGiftViewEndVisibility(boolean hasGift) {
 
-        if(isHideMode && hasGift){
+        if (isHideMode && hasGift) {
             GiftFrameLayout.this.setVisibility(View.GONE);
-        }else {
+        } else {
             GiftFrameLayout.this.setVisibility(View.INVISIBLE);
         }
     }
@@ -163,9 +164,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         }
         mGift = gift;
 
-        if(mGift.isCurrentStart()){
+        if (mGift.isCurrentStart()) {
             mGiftCount = gift.getGiftCount() + mGift.getHitCombo();
-        }else {
+        } else {
             mGiftCount = gift.getGiftCount();
         }
         if (!TextUtils.isEmpty(gift.getSendUserName())) {
@@ -312,6 +313,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         return mGift.getSendGiftTime();
     }
 
+    public boolean isCurrentStart() {
+        return mGift.isCurrentStart();
+    }
+
+    public void setCurrentStart(boolean currentStart) {
+        mGift.setCurrentStart(currentStart);
+    }
+
     /**
      * <pre>
      * 这里不能GIFT_DISMISS_TIME % INVISIBLE == 0,
@@ -328,18 +337,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * </pre>
      */
     private void checkGiftCountSubscribe() {
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (mGiftCount > mCombo) {
-//                    mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
-//                }
-//            }
-//        };
-//        mTimer = new Timer();
-//        mTimer.schedule(task, 0, INTERVAL);
-
-        runnable = new Runnable(){
+        runnable = new Runnable() {
             @Override
             public void run() {
                 if (mGiftCount > mCombo) {
@@ -371,9 +369,6 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     public void stopCheckGiftCount() {
-//        if (mTimer != null) {
-//            mTimer.cancel();
-//        }
         comboHandler.removeCallbacksAndMessages(null);
 
 //        if (mSubscribe != null && !mSubscribe.isUnsubscribed()) {
@@ -382,16 +377,30 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     public void clearHandler() {
-        if(mHandler != null){
+        if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
         }
+
         mGiftAnimationListener = null;
 
-        if(comboHandler != null){
+        if (comboHandler != null) {
             comboHandler.removeCallbacksAndMessages(null);
             comboHandler = null;//这里要置位null，否则当前页面销毁时，正在执行的礼物动画会造成内存泄漏
         }
+        resetGift();
+    }
+
+    public void resetGift() {
+        runnable = null;
+        mCurrentAnimRunnable = null;
+        mGift = null;
+        mIndex = -1;
+        mGiftCount = 0;
+        mCombo = 1;
+        isShowing = false;
+        isEnd = true;
+        isHideMode = false;
     }
 
     /**
@@ -403,24 +412,24 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         isShowing = true;
         isEnd = false;
 
-        if (mGift.getSendUserPic().equals("")){
+        if (mGift.getSendUserPic().equals("")) {
             Glide.with(mContext).load(R.mipmap.icon).transform(new GlideCircleTransform(mContext)).into(anim_header);
-        }else {
+        } else {
             Glide.with(mContext).load(mGift.getSendUserPic()).transform(new GlideCircleTransform(mContext)).into(anim_header);
         }
-        if(mGift.isCurrentStart()){
+        if (mGift.isCurrentStart()) {
             mCombo = mGift.getHitCombo();
         }
         anim_num.setText("x " + mCombo);
 
-        if (!mGift.getGiftPic().equals("")){
+        if (!mGift.getGiftPic().equals("")) {
             Glide.with(mContext).load(mGift.getGiftPic()).placeholder(R.mipmap.loading).into(new SimpleTarget<GlideDrawable>() {
                 @Override
                 public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                     anim_gift.setImageDrawable(resource);
                 }
             });
-        }else {
+        } else {
             Bitmap bitmap = null;
             try {
                 bitmap = BitmapFactory.decodeStream(getContext().getAssets().open(mGift.getGiftId()));
@@ -450,7 +459,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     public AnimatorSet startAnimation(ICustormAnim anim) {
         this.anim = anim;
-        if(anim == null){
+        if (anim == null) {
             hideView();
             //布局飞入
             ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(anim_rl, -getWidth(), 0, 400, new OvershootInterpolator());
@@ -480,13 +489,13 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
             AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(flyFromLtoR, flyFromLtoR2);
 
             return animatorSet;
-        }else {
+        } else {
             return anim.startAnim(this, rootView);
         }
     }
 
     public void comboAnimation() {
-        if(anim == null){
+        if (anim == null) {
             //数量增加
             ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(anim_num);
             scaleGiftNum.addListener(new AnimatorListenerAdapter() {
@@ -501,13 +510,13 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
                 }
             });
             scaleGiftNum.start();
-        }else {
+        } else {
             anim.comboAnim(this, rootView);
         }
     }
 
     public AnimatorSet endAnmation(ICustormAnim anim) {
-        if(anim == null){
+        if (anim == null) {
             //向上渐变消失
             ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 0, -100, 500, 0);
             fadeAnimator.addListener(new AnimatorListenerAdapter() {
@@ -522,7 +531,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
             AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(fadeAnimator, fadeAnimator2);
             return animatorSet;
-        }else {
+        } else {
             return anim.endAnim(this, rootView);
         }
     }

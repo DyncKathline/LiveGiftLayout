@@ -3,9 +3,11 @@ package org.dync.giftlibrary.widget;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +20,7 @@ import java.util.List;
 public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListener {
 
     private static final String TAG = "GiftControl";
+    protected Context mContext;
     /**
      * 自定义动画
      */
@@ -31,8 +34,13 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
      * 礼物数量集合
      */
     private SparseArray<GiftFrameLayout> mGiftLayoutList;
+    /**
+     * 添加礼物布局的父容器
+     */
+    private LinearLayout mGiftLayoutParent;
 
-    public GiftControl() {
+    public GiftControl(Context context) {
+        mContext = context;
         mGiftQueue = new ArrayList<>();
     }
 
@@ -41,12 +49,35 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
         return this;
     }
-    
-    public GiftControl setGiftLayout(boolean isHideMode, @NonNull SparseArray<GiftFrameLayout> giftLayoutList){
+
+    /**
+     *
+     * @param isHideMode        是否开启隐藏动画
+     * @param giftLayoutParent  存放礼物控件的父容器
+     * @param giftLayoutNums    礼物控件的数量
+     * @return
+     */
+    public GiftControl setGiftLayout(boolean isHideMode, LinearLayout giftLayoutParent, @NonNull int giftLayoutNums){
+        if(giftLayoutNums <= 0){
+            throw new IllegalArgumentException("GiftFrameLayout数量必须大于0");
+        }
+        if(giftLayoutParent.getChildCount() > 0){//如果父容器没有子孩子，就进行添加
+            return this;
+        }
+        mGiftLayoutParent = giftLayoutParent;
+
+        final SparseArray<GiftFrameLayout> giftLayoutList = new SparseArray<>();
+        for (int i = 0; i < giftLayoutNums; i++) {
+            giftLayoutList.append(i, new GiftFrameLayout(mContext));
+        }
+
         mGiftLayoutList = giftLayoutList;
         GiftFrameLayout giftFrameLayout;
         for (int i = 0; i < mGiftLayoutList.size(); i++) {
             giftFrameLayout = mGiftLayoutList.get(i);
+
+            giftLayoutParent.addView(giftFrameLayout);
+
             giftFrameLayout.setIndex(i);
             giftFrameLayout.firstHideLayout();
             giftFrameLayout.setGiftAnimationListener(this);
@@ -245,6 +276,10 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         }
     }
 
+    public GiftControl reSetGiftLayout(boolean isHideMode, LinearLayout giftLayoutParent,  @NonNull int giftLayoutNums){
+        return setGiftLayout(isHideMode, giftLayoutParent, giftLayoutNums);
+    }
+
     /**
      * 清除所有礼物
      */
@@ -252,6 +287,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         if (mGiftQueue != null) {
             mGiftQueue.clear();
         }
+        mGiftLayoutParent.removeAllViews();
         GiftFrameLayout giftFrameLayout;
         for (int i = 0; i < mGiftLayoutList.size(); i++) {
             giftFrameLayout = mGiftLayoutList.get(i);

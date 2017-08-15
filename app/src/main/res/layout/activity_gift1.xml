@@ -15,22 +15,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:orientation="vertical">
-
-        <org.dync.giftlibrary.widget.GiftFrameLayout
-            android:id="@+id/gift_layout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <org.dync.giftlibrary.widget.GiftFrameLayout
-            android:id="@+id/gift_layout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <org.dync.giftlibrary.widget.GiftFrameLayout
-            android:id="@+id/gift_layout3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -66,28 +50,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <TextView
-            android:id="@+id/tv_tip_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="注意：清除礼物后无法再进行礼物的显示"
-            android:textColor="@color/red"/>
-
         <Button
             android:id="@+id/btn_clear_gift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_tip_clear"
             android:text="清除礼物" />
+
+        <Button
+            android:id="@+id/btn_reset_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/btn_clear_gift"
+            android:layout_toRightOf="@+id/btn_clear_gift"
+            android:layout_toEndOf="@+id/btn_clear_gift"
+            android:text="初始化礼物" />
 
         <Button
             android:id="@+id/btn_hide_gift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="隐藏/显示礼物"
-            android:layout_alignBottom="@id/btn_clear_gift"
-            android:layout_toRightOf="@+id/btn_clear_gift"
-            android:layout_toEndOf="@+id/btn_clear_gift" />
+            android:layout_alignBottom="@id/btn_reset_gift"
+            android:layout_toRightOf="@+id/btn_reset_gift"
+            android:layout_toEndOf="@+id/btn_reset_gift" />
     </RelativeLayout>
 
     <LinearLayout

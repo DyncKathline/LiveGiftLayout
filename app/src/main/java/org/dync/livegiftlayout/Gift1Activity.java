@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -21,9 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.dync.giftlibrary.util.GiftPanelControl;
-import org.dync.giftlibrary.widget.CustormAnim;
 import org.dync.giftlibrary.widget.GiftControl;
-import org.dync.giftlibrary.widget.GiftFrameLayout;
 import org.dync.giftlibrary.widget.GiftModel;
 
 import java.io.IOException;
@@ -33,10 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gift1Activity extends AppCompatActivity {
-
-    private GiftFrameLayout giftFrameLayout1;
-    private GiftFrameLayout giftFrameLayout2;
-    private GiftFrameLayout giftFrameLayout3;
 
     private LinearLayout giftLayout;
     private LinearLayout ll_portrait;
@@ -60,9 +53,7 @@ public class Gift1Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift1);
-        giftFrameLayout1 = (GiftFrameLayout) findViewById(R.id.gift_layout1);
-        giftFrameLayout2 = (GiftFrameLayout) findViewById(R.id.gift_layout2);
-        giftFrameLayout3 = (GiftFrameLayout) findViewById(R.id.gift_layout3);
+
 
         showGiftMsgList();
 
@@ -81,13 +72,10 @@ public class Gift1Activity extends AppCompatActivity {
                 mGiftPrice = giftPrice;
             }
         });
-        giftControl = new GiftControl();
-        SparseArray<GiftFrameLayout> giftLayoutList = new SparseArray<>();
-        giftLayoutList.append(0, giftFrameLayout1);
-        giftLayoutList.append(1, giftFrameLayout2);
-        giftLayoutList.append(2, giftFrameLayout3);
-        giftControl.setGiftLayout(false, giftLayoutList)
-                .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
+        final LinearLayout giftParent = (LinearLayout) findViewById(R.id.ll_gift_parent);
+        giftControl = new GiftControl(this);
+        giftControl.setGiftLayout(false, giftParent, 3)
+                .setCustormAnim(null);//这里可以自定义礼物动画
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -149,7 +137,13 @@ public class Gift1Activity extends AppCompatActivity {
                 }
             }
         });
-        final LinearLayout giftParent = (LinearLayout) findViewById(R.id.ll_gift_parent);
+        findViewById(R.id.btn_reset_gift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                giftControl.reSetGiftLayout(false, giftParent, 3);
+            }
+        });
+
         findViewById(R.id.btn_hide_gift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
