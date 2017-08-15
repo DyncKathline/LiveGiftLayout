@@ -19,6 +19,7 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
         android:src="@mipmap/ic_bg" />
 
     <LinearLayout
+        android:id="@+id/ll_gift_parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
