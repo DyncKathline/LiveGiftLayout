@@ -2,7 +2,6 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
 ## [更新日志](https://github.com/DyncKathline/LiveGiftLayout/wiki)  
 首先先上图   
 ![image](https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/173ee2616f8e17d7971d766120d992a3f2a3d829/screenshot/GIF.gif)  
-### 个人建议使用Gift1Activity项目中的库，Gift2Activity项目中的库后面不怎么维护了  
 ### 1：到[GitHub](https://github.com/DyncKathline/LiveGiftLayout) 把项目clone到本地。  
 ### 2: 把giftlibrary库依赖到你的项目中去  
 ### 3：在你要显示的xml文件中添加展示礼物和礼物面板的地方 以项目中的activity_gift1.xml为例
@@ -20,11 +19,17 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
 
     <LinearLayout
         android:id="@+id/ll_gift_parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:orientation="vertical">
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="300dp"/>
 
     <Button
         android:id="@+id/action"
@@ -33,6 +38,50 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="礼物面板显示/隐藏" />
+
+    <CheckBox
+        android:id="@+id/rb_currentStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/action"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:shadowColor="@color/black"
+        android:shadowRadius="10"
+        android:shadowDx="5"
+        android:shadowDy="10"
+        android:textSize="20sp"
+        android:text="是否使用当前礼物数开始显示" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_clear_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除礼物" />
+
+        <Button
+            android:id="@+id/btn_reset_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/btn_clear_gift"
+            android:layout_toRightOf="@+id/btn_clear_gift"
+            android:layout_toEndOf="@+id/btn_clear_gift"
+            android:text="初始化礼物" />
+
+        <Button
+            android:id="@+id/btn_hide_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="隐藏/显示礼物"
+            android:layout_alignBottom="@id/btn_reset_gift"
+            android:layout_toRightOf="@+id/btn_reset_gift"
+            android:layout_toEndOf="@+id/btn_reset_gift" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/bottom"
@@ -46,9 +95,8 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
     </LinearLayout>
 
 </RelativeLayout>
-
 ```
-上面的GiftFrameLayout是展示礼物的控件，我这里仅展示两条，你可以添加多个礼物同时展示。同时礼物面板可以使用DialogFragment来替代我这里。
+这里礼物面板可以使用DialogFragment来替代我这里。
   
 ### 4：在activity中找到控件后就可以初始化礼物模块了。  
 **a.礼物面板**。  
