@@ -82,16 +82,15 @@ giftPanelControl.init(null);//这里如果为null则加载本地礼物图片
 
 **b.展示礼物**  
 
-这里的setGiftLayout(false, giftLayoutList)方法，参数一：是否开启上面的礼物轨道消失后下面的礼物轨道会移上去模式，true是开启，false是关闭；  
-参数二：礼物轨道的数量。  
+这里的setGiftLayout(false, giftParent, 3)方法，参数一：是否开启上面的礼物轨道消失后下面的礼物轨道会移上去模式，true是开启，false是关闭；  
+参数二：礼物控件的父容器  
+参数三：礼物轨道的数量。  
 setCustormAnim(new CustormAnim())方法，对礼物的动画可以进行扩展，可以在不修改源码的情况下定制属于你的效果。
 ```
-        giftControl = new GiftControl();
-        SparseArray<GiftFrameLayout> giftLayoutList = new SparseArray<>();
-        giftLayoutList.append(0, giftFrameLayout1);
-        giftLayoutList.append(1, giftFrameLayout2);
-        giftControl.setGiftLayout(false, giftLayoutList)
-                .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
+final LinearLayout giftParent = (LinearLayout) findViewById(R.id.ll_gift_parent);
+giftControl = new GiftControl(this);
+giftControl.setGiftLayout(false, giftParent, 3)
+        .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
 ```
 **c.显示礼物数量的面板**  
 
@@ -142,6 +141,24 @@ findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
                 }
             }
         });
+```
+**f.类似于切换直播间可以重新发送礼物（切换效果没做，功能实现了）**  
+
+```
+findViewById(R.id.btn_clear_gift).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        if (giftControl != null) {
+            giftControl.cleanAll();
+        }
+    }
+});
+findViewById(R.id.btn_reset_gift).setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        giftControl.reSetGiftLayout(false, giftParent, 3);
+    }
+});
 ```
 **最后如果对你有用，请动动你的鼠标给个start或者fork吧，不胜感激**
 
