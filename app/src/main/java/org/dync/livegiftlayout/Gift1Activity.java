@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.dync.giftlibrary.util.GiftPanelControl;
+import org.dync.giftlibrary.widget.CustormAnim;
 import org.dync.giftlibrary.widget.GiftControl;
 import org.dync.giftlibrary.widget.GiftModel;
 
@@ -75,7 +76,7 @@ public class Gift1Activity extends AppCompatActivity {
         final LinearLayout giftParent = (LinearLayout) findViewById(R.id.ll_gift_parent);
         giftControl = new GiftControl(this);
         giftControl.setGiftLayout(false, giftParent, 3)
-                .setCustormAnim(null);//这里可以自定义礼物动画
+                .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
