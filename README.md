@@ -23,16 +23,6 @@ QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:orientation="vertical">
-
-        <org.dync.giftlibrary.widget.GiftFrameLayout
-            android:id="@+id/gift_layout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <org.dync.giftlibrary.widget.GiftFrameLayout
-            android:id="@+id/gift_layout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <Button
