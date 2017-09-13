@@ -107,7 +107,8 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                             //连击
                             Log.i(TAG, "addGiftQueue: ========giftFrameLayout("+ giftFrameLayout.getIndex()+")连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
                             if(gift.getJumpCombo() > 0){
-                                giftFrameLayout.setGiftCount(/*gift.getGiftCount() + */gift.getJumpCombo());
+                                //触发连击，这里不要在加上giftCount了，因为你要连击的数已经变成jumpCombo了
+                                giftFrameLayout.setGiftCount(gift.getJumpCombo());
                             }else {
                                 giftFrameLayout.setGiftCount(gift.getGiftCount());
                             }
