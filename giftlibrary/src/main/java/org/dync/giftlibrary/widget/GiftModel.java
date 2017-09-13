@@ -16,6 +16,7 @@ public class GiftModel {
     private int hitCombo;//上一次要连击的礼物数
     private Long sendGiftTime;//发送礼物的时间
     private boolean currentStart;//是否从当前数开始连击
+    private int jumpCombo;//跳到指定连击数，例如：从1直接显示3，这里的值就是2
 
     public GiftModel() {
     }
@@ -117,5 +118,13 @@ public class GiftModel {
     public GiftModel setCurrentStart(boolean currentStart) {
         this.currentStart = currentStart;
         return this;
+    }
+
+    public int getJumpCombo() {
+        return jumpCombo;
+    }
+
+    public void setJumpCombo(int jumpCombo) {
+        this.jumpCombo = jumpCombo;
     }
 }

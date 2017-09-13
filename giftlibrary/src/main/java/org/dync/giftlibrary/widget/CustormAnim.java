@@ -29,7 +29,7 @@ public class CustormAnim implements ICustormAnim {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                giftFrameLayout.comboAnimation();
+                giftFrameLayout.comboAnimation(true);
             }
         });
         AnimatorSet animSet = new AnimatorSet();
@@ -39,22 +39,27 @@ public class CustormAnim implements ICustormAnim {
     }
 
     @Override
-    public AnimatorSet comboAnim(final GiftFrameLayout giftFrameLayout, View rootView) {
+    public AnimatorSet comboAnim(final GiftFrameLayout giftFrameLayout, View rootView, boolean isFirst) {
         final StrokeTextView anim_num = (StrokeTextView) rootView.findViewById(R.id.animation_num);
-        //数量增加
-        ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(anim_num);
-        scaleGiftNum.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                anim_num.setVisibility(View.VISIBLE);
-            }
+        if (isFirst) {
+            anim_num.setVisibility(View.VISIBLE);
+            anim_num.setText("x " + giftFrameLayout.getCombo());
+            giftFrameLayout.comboEndAnim();//这里一定要回调该方法，不然连击不会生效
+        } else {
+            //数量增加
+            ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(anim_num);
+            scaleGiftNum.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                giftFrameLayout.comboEndAnim();//这里一定要回调该方法，不然连击不会生效
-            }
-        });
-        scaleGiftNum.start();
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    giftFrameLayout.comboEndAnim();//这里一定要回调该方法，不然连击不会生效
+                }
+            });
+            scaleGiftNum.start();
+        }
         return null;
     }
 

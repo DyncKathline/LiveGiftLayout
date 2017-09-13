@@ -106,7 +106,11 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                         if (giftFrameLayout.getCurrentGiftId().equals(gift.getGiftId()) && giftFrameLayout.getCurrentSendUserId().equals(gift.getSendUserId())) {
                             //连击
                             Log.i(TAG, "addGiftQueue: ========giftFrameLayout("+ giftFrameLayout.getIndex()+")连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
-                            giftFrameLayout.setGiftCount(gift.getGiftCount());
+                            if(gift.getJumpCombo() > 0){
+                                giftFrameLayout.setGiftCount(/*gift.getGiftCount() + */gift.getJumpCombo());
+                            }else {
+                                giftFrameLayout.setGiftCount(gift.getGiftCount());
+                            }
                             giftFrameLayout.setSendGiftTime(gift.getSendGiftTime());
                             return;
                         }

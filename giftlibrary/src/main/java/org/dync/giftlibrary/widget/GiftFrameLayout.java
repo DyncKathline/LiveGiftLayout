@@ -77,7 +77,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     /**
      * 当前播放连击数
      */
-    private int mCombo = 1;
+    private int mCombo = 0;
+    /**
+     * 跳到指定连击数，例如：从1直接显示3，这里的值就是2
+     */
+    private int mJumpCombo = 0;
     /**
      * 礼物动画正在显示，在这期间可触发连击效果
      */
@@ -169,6 +173,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         } else {
             mGiftCount = gift.getGiftCount();
         }
+        mJumpCombo = mGift.getJumpCombo();
         if (!TextUtils.isEmpty(gift.getSendUserName())) {
             anim_nickname.setText(gift.getSendUserName());
         }
@@ -186,9 +191,13 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                mCombo++;
+                if (mJumpCombo > 0) {
+                    mCombo += mJumpCombo;
+                } else {
+                    ++mCombo;
+                }
                 anim_num.setText("x " + (mCombo));
-                comboAnimation();
+                comboAnimation(false);
                 removeDismissGiftCallback();
                 break;
             default:
@@ -255,7 +264,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     public void setCurrentShowStatus(boolean status) {
-        mCombo = 1;
+        mCombo = 0;
         isShowing = status;
     }
 
@@ -297,6 +306,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      * @param count
      */
     public synchronized void setGiftCount(int count) {
+        Log.d(TAG, "setGiftCount: " + count);
         mGiftCount += count;
         mGift.setGiftCount(mGiftCount);
     }
@@ -319,6 +329,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     public void setCurrentStart(boolean currentStart) {
         mGift.setCurrentStart(currentStart);
+    }
+
+    public int getCombo() {
+        return mCombo;
+    }
+
+    public int getJumpCombo() {
+        return mJumpCombo;
     }
 
     /**
@@ -397,7 +415,8 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         mGift = null;
         mIndex = -1;
         mGiftCount = 0;
-        mCombo = 1;
+        mCombo = 0;
+        mJumpCombo = 0;
         isShowing = false;
         isEnd = true;
         isHideMode = false;
@@ -420,6 +439,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         if (mGift.isCurrentStart()) {
             mCombo = mGift.getHitCombo();
         }
+        anim_num.setVisibility(INVISIBLE);
         anim_num.setText("x " + mCombo);
 
         if (!mGift.getGiftPic().equals("")) {
@@ -481,9 +501,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    GiftAnimationUtil.startAnimationDrawable(anim_light);
-                    anim_num.setVisibility(View.VISIBLE);
-                    comboAnimation();
+                    comboAnimation(true);
                 }
             });
             AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(flyFromLtoR, flyFromLtoR2);
@@ -494,24 +512,31 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         }
     }
 
-    public void comboAnimation() {
+    public void comboAnimation(boolean isFirst) {
         if (anim == null) {
-            //数量增加
-            ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(anim_num);
-            scaleGiftNum.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    anim_num.setVisibility(View.VISIBLE);
-                }
+           if(isFirst){
+               GiftAnimationUtil.startAnimationDrawable(anim_light);
+               anim_num.setVisibility(View.VISIBLE);
+               anim_num.setText("x " + mCombo);
+               comboEndAnim();
+           }else {
+               //数量增加
+               ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(anim_num);
+               scaleGiftNum.addListener(new AnimatorListenerAdapter() {
+                   @Override
+                   public void onAnimationStart(Animator animation) {
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    comboEndAnim();
-                }
-            });
-            scaleGiftNum.start();
+                   }
+
+                   @Override
+                   public void onAnimationEnd(Animator animation) {
+                       comboEndAnim();
+                   }
+               });
+               scaleGiftNum.start();
+           }
         } else {
-            anim.comboAnim(this, rootView);
+            anim.comboAnim(this, rootView, isFirst);
         }
     }
 

@@ -103,6 +103,7 @@ public class Gift1Activity extends AppCompatActivity {
                             if(currentStart){
                                 giftModel.setHitCombo(giftnum);
                             }
+//                            giftModel.setJumpCombo(10);
                             giftControl.loadGift(giftModel);
                             adapter.add(mGiftName);
                             Log.d("TAG", "onClick: " + giftControl.getShowingGiftLayoutCount());
