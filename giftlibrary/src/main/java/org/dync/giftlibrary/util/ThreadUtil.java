@@ -52,15 +52,7 @@ public class ThreadUtil {
      * @param task
      */
     public static void runOnUiThread(Runnable task) {
-        // 判断当时是否是主线程,如果是,就直接运行
-        if (isRunOnUiThread()) {
-            // 当前就是主线程
-            task.run();
-        } else {
-            // 不是主线程, 需要运行在主线程
-            // handler处理发送Message之外,也可以发送一个Runnable对象,也是运行在主线程的
-            mHandler.post(task);
-        }
+        mHandler.post(task);
     }
 
 
@@ -70,7 +62,7 @@ public class ThreadUtil {
      * @param task
      * @param delayMillis 延时时间，单位毫秒
      */
-    public static void runInUIThread(Runnable task, long delayMillis) {
+    public static void runOnUIThread(Runnable task, long delayMillis) {
         mHandler.postDelayed(task, delayMillis);
     }
 

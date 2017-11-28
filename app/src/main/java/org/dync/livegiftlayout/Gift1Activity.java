@@ -19,9 +19,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.dync.giftlibrary.util.GiftPanelControl;
+import org.dync.giftlibrary.GiftPanelControl;
 import org.dync.giftlibrary.widget.CustormAnim;
-import org.dync.giftlibrary.widget.GiftControl;
+import org.dync.giftlibrary.GiftControl;
 import org.dync.giftlibrary.widget.GiftModel;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package org.dync.giftlibrary.util;
+package org.dync.giftlibrary;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.dync.giftlibrary.R;
 import org.dync.giftlibrary.adapter.FaceGVAdapter;
 import org.dync.giftlibrary.adapter.FaceVPAdapter;
+import org.dync.giftlibrary.util.ExpressionUtil;
 import org.dync.giftlibrary.widget.GiftModel;
 
 import java.util.ArrayList;

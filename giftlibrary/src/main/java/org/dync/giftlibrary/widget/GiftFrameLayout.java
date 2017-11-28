@@ -28,7 +28,9 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import org.dync.giftlibrary.GiftControl;
 import org.dync.giftlibrary.R;
+import org.dync.giftlibrary.util.GiftAnimationUtil;
 
 import java.io.IOException;
 

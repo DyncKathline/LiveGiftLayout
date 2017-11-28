@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import org.dync.giftlibrary.R;
+import org.dync.giftlibrary.util.GiftAnimationUtil;
 
 /**
  * Created by KathLine on 2017/7/7.

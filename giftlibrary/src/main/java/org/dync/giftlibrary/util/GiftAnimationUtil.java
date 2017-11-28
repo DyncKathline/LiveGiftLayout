@@ -1,4 +1,4 @@
-package org.dync.giftlibrary.widget;
+package org.dync.giftlibrary.util;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
