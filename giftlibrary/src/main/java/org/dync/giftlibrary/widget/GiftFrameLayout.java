@@ -214,7 +214,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     private void dismissGiftLayout() {
         removeDismissGiftCallback();
         if (mGiftAnimationListener != null) {
-            mGiftAnimationListener.dismiss(mIndex);
+            mGiftAnimationListener.dismiss(this);
         }
     }
 
@@ -254,7 +254,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
     }
 
     public interface LeftGiftAnimationStatusListener {
-        void dismiss(int index);
+        void dismiss(GiftFrameLayout giftFrameLayout);
     }
 
     public void setGiftAnimationListener(LeftGiftAnimationStatusListener giftAnimationListener) {

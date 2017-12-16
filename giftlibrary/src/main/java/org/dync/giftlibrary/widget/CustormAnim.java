@@ -90,11 +90,11 @@ public class CustormAnim implements ICustormAnim {
         animator1.setDuration(1500);
 
         // 复原
-        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(giftFrameLayout, 0, 0, 0, 0);
+//        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(giftFrameLayout, 0, 0, 0, 0);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(animator1).after(animator);
-        animatorSet.play(fadeAnimator2).after(animator1);
+//        animatorSet.play(fadeAnimator2).after(animator1);
         animatorSet.start();
         return animatorSet;
     }
