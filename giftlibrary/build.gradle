@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 2
-        versionName "1.2"
+        minSdkVersion 11
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -21,15 +21,63 @@ android {
     }
 }
 
+//统一support库的版本
+configurations.all {
+    resolutionStrategy.eachDependency {
+        DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion rootProject.supportLibraryVersion
+                }
+            }
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:' + rootProject.supportLibraryVersion
+    compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibraryVersion
     testCompile 'junit:junit:4.12'
 //    compile 'io.reactivex:rxjava:1.2.1'
 //    compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 }
+
+
+//解决 gradlew 构建错误: 编码 GBK的不可映射字符
+tasks.withType(Javadoc) {
+//    options.encoding = "UTF-8"
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+}
+
+//ext {
+//    //显示的目录bintray.user/bintrayRepo/bintrayName
+//    bintrayRepo = 'giftLayout' //这个应该是传到maven的仓库的，即在Open Source Repository界面
+//    bintrayName = 'giftlibrary'  //发布的项目名字，即在Create New Package界面
+//
+//    //GROUP_ID:ARTIFACT_ID:VERSION
+//    publishedGroupId = 'org.anyrtc'//依赖时的GROUP_ID
+//    libraryName = 'giftlibrary'
+//    artifact = 'giftlibrary'//依赖时的ARTIFACT_ID，这里要与类库名保持一致，即项目的module名
+//
+//    libraryDescription = '一个发送礼物的库' //项目的描述
+//
+//    siteUrl = '' // 项目的主页
+//    gitUrl = '' // Git仓库的url
+//
+//    libraryVersion = '1.0.0' //依赖时的VERSION
+//
+//    developerId = 'dync'
+//    developerName = 'anrtc'
+//    developerEmail = 'dync_dev@dync.cc'
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+//apply from: 'bintray.gradle'
