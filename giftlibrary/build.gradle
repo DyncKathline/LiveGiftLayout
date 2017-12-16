@@ -46,38 +46,3 @@ dependencies {
 //    compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 }
-
-
-//解决 gradlew 构建错误: 编码 GBK的不可映射字符
-tasks.withType(Javadoc) {
-//    options.encoding = "UTF-8"
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-}
-
-//ext {
-//    //显示的目录bintray.user/bintrayRepo/bintrayName
-//    bintrayRepo = 'giftLayout' //这个应该是传到maven的仓库的，即在Open Source Repository界面
-//    bintrayName = 'giftlibrary'  //发布的项目名字，即在Create New Package界面
-//
-//    //GROUP_ID:ARTIFACT_ID:VERSION
-//    publishedGroupId = 'org.anyrtc'//依赖时的GROUP_ID
-//    libraryName = 'giftlibrary'
-//    artifact = 'giftlibrary'//依赖时的ARTIFACT_ID，这里要与类库名保持一致，即项目的module名
-//
-//    libraryDescription = '一个发送礼物的库' //项目的描述
-//
-//    siteUrl = '' // 项目的主页
-//    gitUrl = '' // Git仓库的url
-//
-//    libraryVersion = '1.0.0' //依赖时的VERSION
-//
-//    developerId = 'dync'
-//    developerName = 'anrtc'
-//    developerEmail = 'dync_dev@dync.cc'
-//
-//    licenseName = 'The Apache Software License, Version 2.0'
-//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//    allLicenses = ["Apache-2.0"]
-//}
-//apply from: 'bintray.gradle'
