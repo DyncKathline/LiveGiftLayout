@@ -1,7 +1,7 @@
 QQ交流群：611902811，有兴趣的可以交流  [博客地址](http://blog.csdn.net/DyncKathline/article/details/55682053)  
 ## [更新日志](https://github.com/DyncKathline/LiveGiftLayout/wiki)  
 首先先上图   
-![image](https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/173ee2616f8e17d7971d766120d992a3f2a3d829/screenshot/GIF.gif)  
+![image](https://raw.githubusercontent.com/DyncKathline/LiveGiftLayout/master/screenshot/GIF.gif)  
 ### 1：到[GitHub](https://github.com/DyncKathline/LiveGiftLayout) 把项目clone到本地。  
 ### 2: 把giftlibrary库依赖到你的项目中去  
 ### 3：在你要显示的xml文件中添加展示礼物和礼物面板的地方 以项目中的activity_gift1.xml为例
