@@ -75,7 +75,8 @@ public class Gift1Activity extends AppCompatActivity {
         });
         final LinearLayout giftParent = (LinearLayout) findViewById(R.id.ll_gift_parent);
         giftControl = new GiftControl(this);
-        giftControl.setGiftLayout(false, giftParent, 3)
+        giftControl.setGiftLayout(giftParent, 3)
+                .setHideMode(false)
                 .setCustormAnim(new CustormAnim());//这里可以自定义礼物动画
         tvGiftNum.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +101,7 @@ public class Gift1Activity extends AppCompatActivity {
                             giftModel.setGiftId(mGiftName).setGiftName("礼物名字").setGiftCount(giftnum).setGiftPic(mGifturl)
                                     .setSendUserId("1234").setSendUserName("吕靓茜").setSendUserPic("").setSendGiftTime(System.currentTimeMillis())
                                     .setCurrentStart(currentStart);
-                            if(currentStart){
+                            if (currentStart) {
                                 giftModel.setHitCombo(giftnum);
                             }
 //                            giftModel.setJumpCombo(10);
@@ -122,15 +123,37 @@ public class Gift1Activity extends AppCompatActivity {
                 }
             }
         });
-        CheckBox rbCurrentStart = (CheckBox) findViewById(R.id.rb_currentStart);
-        rbCurrentStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        CheckBox rb_currentStart = (CheckBox) findViewById(R.id.rb_currentStart);
+        rb_currentStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 currentStart = isChecked;
             }
         });
+        CheckBox rb_displayMode = (CheckBox) findViewById(R.id.rb_displayMode);
+        rb_displayMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(giftControl != null) {
+                    if (isChecked) {
+                        giftControl.setDisplayMode(GiftControl.FROM_BOTTOM_TO_TOP);
+                    } else {
+                        giftControl.setDisplayMode(GiftControl.FROM_TOP_TO_BOTTOM);
+                    }
+                }
+            }
+        });
+        CheckBox rb_hideMode = (CheckBox) findViewById(R.id.rb_hideMode);
+        rb_hideMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(giftControl != null) {
+                    giftControl.setHideMode(isChecked);
+                }
+            }
+        });
 
-        
+
         findViewById(R.id.btn_clear_gift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +165,8 @@ public class Gift1Activity extends AppCompatActivity {
         findViewById(R.id.btn_reset_gift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                giftControl.reSetGiftLayout(false, giftParent, 3);
+                giftControl.reSetGiftLayout(giftParent, 3)
+                        .setHideMode(false);
             }
         });
 
@@ -159,11 +183,11 @@ public class Gift1Activity extends AppCompatActivity {
     }
 
     //模拟从网络获取礼物url的集合
-    private List<GiftBean.GiftListBean> fromNetData(){
+    private List<GiftBean.GiftListBean> fromNetData() {
         List<GiftBean.GiftListBean> list = new ArrayList<>();
         try {
-            InputStream in= getAssets().open("gift.json");
-            InputStreamReader json=new InputStreamReader(in);
+            InputStream in = getAssets().open("gift.json");
+            InputStreamReader json = new InputStreamReader(in);
             Gson gson = new Gson();
             GiftBean giftBean = gson.fromJson(json, GiftBean.class);
             list = giftBean.getGiftList();
@@ -173,10 +197,10 @@ public class Gift1Activity extends AppCompatActivity {
         return list;
     }
 
-    private List<GiftModel> toGiftModel(List<GiftBean.GiftListBean> datas){
+    private List<GiftModel> toGiftModel(List<GiftBean.GiftListBean> datas) {
         List<GiftModel> giftModels = new ArrayList<>();
         GiftModel giftModel;
-        for (int i = 0; i < datas.size(); i++){
+        for (int i = 0; i < datas.size(); i++) {
             GiftBean.GiftListBean giftListBean = datas.get(i);
             giftModel = new GiftModel();
             giftModel.setGiftName(giftListBean.getGiftName()).setGiftPic(giftListBean.getGiftPic()).setGiftPrice(giftListBean.getGiftPrice());

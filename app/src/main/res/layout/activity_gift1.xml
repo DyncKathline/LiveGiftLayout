@@ -12,8 +12,9 @@
     <LinearLayout
         android:id="@+id/ll_gift_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:layout_marginBottom="250dp"
         android:orientation="vertical">
     </LinearLayout>
 
@@ -31,19 +32,54 @@
         android:layout_marginTop="20dp"
         android:text="礼物面板显示/隐藏" />
 
-    <CheckBox
-        android:id="@+id/rb_currentStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/action"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:shadowColor="@color/black"
-        android:shadowRadius="10"
-        android:shadowDx="5"
-        android:shadowDy="10"
-        android:textSize="20sp"
-        android:text="是否使用当前礼物数开始显示" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/action">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/rb_currentStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:shadowRadius="10"
+                android:shadowDx="5"
+                android:shadowDy="10"
+                android:textSize="20sp"
+                android:text="是否使用当前礼物数开始显示" />
+
+            <CheckBox
+                android:id="@+id/rb_displayMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:shadowRadius="10"
+                android:shadowDx="5"
+                android:shadowDy="10"
+                android:textSize="20sp"
+                android:checked="true"
+                android:text="是否由下往上显示" />
+
+            <CheckBox
+                android:id="@+id/rb_hideMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:shadowRadius="10"
+                android:shadowDx="5"
+                android:shadowDy="10"
+                android:textSize="20sp"
+                android:text="是否开启隐藏动画" />
+        </LinearLayout>
+
+    </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"

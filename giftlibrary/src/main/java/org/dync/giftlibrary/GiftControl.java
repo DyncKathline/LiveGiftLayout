@@ -8,6 +8,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.dync.giftlibrary.widget.GiftFrameLayout;
 import org.dync.giftlibrary.widget.GiftModel;
@@ -30,6 +31,16 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
      */
     private ICustormAnim custormAnim;
     /**
+     * 是否开启隐藏动画
+     */
+    private boolean isHideMode;
+    /**
+     * 当前所有礼物动画布局的显示方式
+     */
+    private int curDisplayMode = FROM_BOTTOM_TO_TOP;
+    public static final int FROM_BOTTOM_TO_TOP = 0;//由下往上
+    public static final int FROM_TOP_TO_BOTTOM = 1;//由上往下
+    /**
      * 礼物队列
      */
     private ArrayList<GiftModel> mGiftQueue;
@@ -48,24 +59,22 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         mGiftQueue = new ArrayList<>();
     }
 
-    public GiftControl setCustormAnim(ICustormAnim anim){
+    public GiftControl setCustormAnim(ICustormAnim anim) {
         custormAnim = anim;
 
         return this;
     }
 
     /**
-     *
-     * @param isHideMode        是否开启隐藏动画
-     * @param giftLayoutParent  存放礼物控件的父容器
-     * @param giftLayoutNums    礼物控件的数量
+     * @param giftLayoutParent 存放礼物控件的父容器
+     * @param giftLayoutNums   礼物控件的数量
      * @return
      */
-    public GiftControl setGiftLayout(boolean isHideMode, LinearLayout giftLayoutParent, @NonNull int giftLayoutNums){
-        if(giftLayoutNums <= 0){
+    public GiftControl setGiftLayout(LinearLayout giftLayoutParent, @NonNull int giftLayoutNums) {
+        if (giftLayoutNums <= 0) {
             throw new IllegalArgumentException("GiftFrameLayout数量必须大于0");
         }
-        if(giftLayoutParent.getChildCount() > 0){//如果父容器没有子孩子，就进行添加
+        if (giftLayoutParent.getChildCount() > 0) {//如果父容器没有子孩子，就进行添加
             return this;
         }
         mGiftLayoutParent = giftLayoutParent;
@@ -78,9 +87,31 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         transition.setAnimator(LayoutTransition.DISAPPEARING,
                 transition.getAnimator(LayoutTransition.CHANGE_APPEARING));
         transition.setAnimator(LayoutTransition.CHANGE_DISAPPEARING,
-                transition.getAnimator(LayoutTransition.DISAPPEARING) );
+                transition.getAnimator(LayoutTransition.DISAPPEARING));
         mGiftLayoutParent.setLayoutTransition(transition);
 
+        return this;
+    }
+
+    /**
+     * 是否开启隐藏动画
+     *
+     * @param isHideMode
+     * @return
+     */
+    public GiftControl setHideMode(boolean isHideMode) {
+        this.isHideMode = isHideMode;
+        return this;
+    }
+
+    /**
+     * 当前所有礼物动画布局的显示方式
+     *
+     * @param displayMode {@link #FROM_BOTTOM_TO_TOP}、{@link #FROM_TOP_TO_BOTTOM}
+     * @return
+     */
+    public GiftControl setDisplayMode(int displayMode) {
+        this.curDisplayMode = displayMode;
         return this;
     }
 
@@ -100,14 +131,14 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 GiftFrameLayout giftFrameLayout;
                 for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
                     giftFrameLayout = (GiftFrameLayout) mGiftLayoutParent.getChildAt(i);
-                    if(giftFrameLayout.isShowing()){
+                    if (giftFrameLayout.isShowing()) {
                         if (giftFrameLayout.getCurrentGiftId().equals(gift.getGiftId()) && giftFrameLayout.getCurrentSendUserId().equals(gift.getSendUserId())) {
                             //连击
-                            Log.i(TAG, "addGiftQueue: ========giftFrameLayout("+ giftFrameLayout.getIndex()+")连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
-                            if(gift.getJumpCombo() > 0){
+                            Log.i(TAG, "addGiftQueue: ========giftFrameLayout(" + giftFrameLayout.getIndex() + ")连击========礼物：" + gift.getGiftId() + ",连击X" + gift.getGiftCount());
+                            if (gift.getJumpCombo() > 0) {
                                 //触发连击，这里不要在加上giftCount了git，因为你要连击的数已经变成jumpCombo了
                                 giftFrameLayout.setGiftCount(gift.getJumpCombo());
-                            }else {
+                            } else {
                                 giftFrameLayout.setGiftCount(gift.getGiftCount());
                             }
                             giftFrameLayout.setSendGiftTime(gift.getSendGiftTime());
@@ -168,8 +199,20 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             giftFrameLayout.setIndex(0);
 //            giftFrameLayout.firstHideLayout();
             giftFrameLayout.setGiftAnimationListener(this);
-            giftFrameLayout.setHideMode(false);
-            mGiftLayoutParent.addView(giftFrameLayout, 0);
+            giftFrameLayout.setHideMode(isHideMode);
+            if (curDisplayMode == FROM_BOTTOM_TO_TOP) {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mGiftLayoutParent.getLayoutParams();//两个参数分别是layout_width,layout_height
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);//这个就是添加其他属性的，这个是在父元素的底部。
+                mGiftLayoutParent.addView(giftFrameLayout);
+            } else if (curDisplayMode == FROM_TOP_TO_BOTTOM) {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mGiftLayoutParent.getLayoutParams();//两个参数分别是layout_width,layout_height
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);//这个就是添加其他属性的，这个是在父元素的底部。
+                mGiftLayoutParent.addView(giftFrameLayout, 0);
+            } else {//默认由下往上
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mGiftLayoutParent.getLayoutParams();//两个参数分别是layout_width,layout_height
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);//这个就是添加其他属性的，这个是在父元素的底部。
+                mGiftLayoutParent.addView(giftFrameLayout);
+            }
             Log.d(TAG, "showGift: begin->集合个数：" + mGiftQueue.size());
             boolean hasGift = giftFrameLayout.setGift(getGift());
             if (hasGift) {
@@ -198,6 +241,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     /**
      * 通过获取giftId和getSendUserId当前用户giftId礼物总数
+     *
      * @param giftId
      * @param userId
      * @return
@@ -213,9 +257,9 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
                 curGiftCount = giftModel.getGiftCount();
             } else {//自己的礼物不正在显示，还在队列中
                 Iterator<GiftModel> iterator = mGiftQueue.iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     giftModel = iterator.next();
-                    if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserId().equals(userId)){
+                    if (giftModel.getGiftId().equals(giftId) && giftModel.getSendUserId().equals(userId)) {
                         curGiftCount = giftModel.getGiftCount();
                         break;
                     }
@@ -227,14 +271,15 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     /**
      * 获取正在展示礼物的个数（即GiftFragmeLayout展示的个数）
+     *
      * @return
      */
-    public int getShowingGiftLayoutCount(){
+    public int getShowingGiftLayoutCount() {
         int count = 0;
         GiftFrameLayout giftFrameLayout;
         for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
             giftFrameLayout = (GiftFrameLayout) mGiftLayoutParent.getChildAt(i);
-            if(giftFrameLayout.isShowing()){
+            if (giftFrameLayout.isShowing()) {
                 count++;
             }
         }
@@ -243,14 +288,15 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
 
     /**
      * 获取正在展示礼物的个数实例（即GiftFragmeLayout展示的个数实例）
+     *
      * @return
      */
-    public List<GiftFrameLayout> getShowingGiftLayouts(){
+    public List<GiftFrameLayout> getShowingGiftLayouts() {
         List<GiftFrameLayout> giftLayoutList = new ArrayList<>();
         GiftFrameLayout giftFrameLayout;
         for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
             giftFrameLayout = (GiftFrameLayout) mGiftLayoutParent.getChildAt(i);
-            if(giftFrameLayout.isShowing()){
+            if (giftFrameLayout.isShowing()) {
                 giftLayoutList.add(giftFrameLayout);
             }
         }
@@ -282,8 +328,8 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         }
     }
 
-    public GiftControl reSetGiftLayout(boolean isHideMode, LinearLayout giftLayoutParent,  @NonNull int giftLayoutNums){
-        return setGiftLayout(isHideMode, giftLayoutParent, giftLayoutNums);
+    public GiftControl reSetGiftLayout(LinearLayout giftLayoutParent, @NonNull int giftLayoutNums) {
+        return setGiftLayout(giftLayoutParent, giftLayoutNums);
     }
 
     /**
@@ -296,7 +342,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
         GiftFrameLayout giftFrameLayout;
         for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
             giftFrameLayout = (GiftFrameLayout) mGiftLayoutParent.getChildAt(i);
-            if(giftFrameLayout != null){
+            if (giftFrameLayout != null) {
                 giftFrameLayout.clearHandler();
                 giftFrameLayout.firstHideLayout();
             }
