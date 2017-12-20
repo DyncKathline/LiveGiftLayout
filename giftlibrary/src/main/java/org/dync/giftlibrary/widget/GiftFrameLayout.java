@@ -9,7 +9,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -23,9 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import org.dync.giftlibrary.GiftControl;
 import org.dync.giftlibrary.R;
@@ -455,15 +451,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
         if (!mGift.getGiftPic().equals("")) {
             GlideLoader.init()
-                    .load(mGift.getSendUserPic())
+                    .load(mGift.getGiftPic())
                     .applyDefault()
                     .bitmapTransform(new GlideCircleTransform(mContext))
-                    .into(mContext, new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                            anim_gift.setImageDrawable(resource);
-                        }
-                    });
+                    .into(anim_gift);
         } else {
             Bitmap bitmap = null;
             try {
