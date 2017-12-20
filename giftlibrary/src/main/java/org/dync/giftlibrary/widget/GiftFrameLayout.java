@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -23,14 +24,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.dync.giftlibrary.GiftControl;
 import org.dync.giftlibrary.R;
 import org.dync.giftlibrary.util.GiftAnimationUtil;
+import org.dync.giftlibrary.util.glide.GlideCircleTransform;
+import org.dync.giftlibrary.util.glide.GlideLoader;
 
 import java.io.IOException;
 
@@ -434,9 +435,17 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         isEnd = false;
 
         if (mGift.getSendUserPic().equals("")) {
-            Glide.with(mContext).load(R.mipmap.icon).transform(new GlideCircleTransform(mContext)).into(anim_header);
+            GlideLoader.init()
+                    .load(R.mipmap.icon)
+                    .applyDefault()
+                    .bitmapTransform(new GlideCircleTransform(mContext))
+                    .into(anim_header);
         } else {
-            Glide.with(mContext).load(mGift.getSendUserPic()).transform(new GlideCircleTransform(mContext)).into(anim_header);
+            GlideLoader.init()
+                    .load(mGift.getSendUserPic())
+                    .applyDefault()
+                    .bitmapTransform(new GlideCircleTransform(mContext))
+                    .into(anim_header);
         }
         if (mGift.isCurrentStart()) {
             mCombo = mGift.getHitCombo();
@@ -445,12 +454,16 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         anim_num.setText("x " + mCombo);
 
         if (!mGift.getGiftPic().equals("")) {
-            Glide.with(mContext).load(mGift.getGiftPic()).placeholder(R.mipmap.loading).into(new SimpleTarget<GlideDrawable>() {
-                @Override
-                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    anim_gift.setImageDrawable(resource);
-                }
-            });
+            GlideLoader.init()
+                    .load(mGift.getSendUserPic())
+                    .applyDefault()
+                    .bitmapTransform(new GlideCircleTransform(mContext))
+                    .into(mContext, new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                            anim_gift.setImageDrawable(resource);
+                        }
+                    });
         } else {
             Bitmap bitmap = null;
             try {

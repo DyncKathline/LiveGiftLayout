@@ -11,10 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import org.dync.giftlibrary.R;
 import org.dync.giftlibrary.util.RecyclerViewUtil;
+import org.dync.giftlibrary.util.glide.GlideLoader;
 import org.dync.giftlibrary.widget.GiftModel;
 
 import java.io.IOException;
@@ -84,7 +83,10 @@ public class FaceGVAdapter extends RecyclerView.Adapter<FaceGVAdapter.ViewHodler
     public void onBindViewHolder(final ViewHodler holder, final int position) {
         final GiftModel giftModel = list.get(position);
         if (isNetData) {
-            Glide.with(mContext).load(giftModel.getGiftPic()).placeholder(R.mipmap.loading).into(holder.giftImg);
+            GlideLoader.init()
+                    .load(giftModel.getGiftPic())
+                    .applyDefault(R.mipmap.loading, R.mipmap.loading)
+                    .into(holder.giftImg);
         } else {
             try {
                 Bitmap mBitmap = BitmapFactory.decodeStream(mContext.getAssets().open(giftModel.getGiftName()));
