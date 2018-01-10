@@ -426,7 +426,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      */
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
-        this.setAlpha(1f);
+//        this.setAlpha(1f);
         isShowing = true;
         isEnd = false;
 
