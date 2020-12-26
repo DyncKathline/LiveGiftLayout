@@ -21,28 +21,15 @@ android {
     }
 }
 
-//统一support库的版本
-configurations.all {
-    resolutionStrategy.eachDependency {
-        DependencyResolveDetails details ->
-            def requested = details.requested
-            if (requested.group == 'com.android.support') {
-                if (!requested.name.startsWith("multidex")) {
-                    details.useVersion rootProject.supportLibraryVersion
-                }
-            }
-    }
-}
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:' + rootProject.supportLibraryVersion
-    compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibraryVersion
-    testCompile 'junit:junit:4.12'
-//    compile 'io.reactivex:rxjava:1.2.1'
-//    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.github.bumptech.glide:glide:4.2.0'
+    implementation 'com.android.support:appcompat-v7:' + rootProject.supportLibraryVersion
+    implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibraryVersion
+    testImplementation 'junit:junit:4.12'
+//    implementation 'io.reactivex:rxjava:1.2.1'
+//    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.github.bumptech.glide:glide:4.2.0'
 }

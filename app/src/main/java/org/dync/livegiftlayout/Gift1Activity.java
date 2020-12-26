@@ -64,7 +64,7 @@ public class Gift1Activity extends AppCompatActivity {
         List<GiftModel> giftModels = toGiftModel(giftListBeen);//转化为发送礼物的集合
 
         GiftPanelControl giftPanelControl = new GiftPanelControl(this, mViewpager, mRecyclerView, mDotsLayout);
-        giftPanelControl.init(giftModels);//这里如果为null则加载本地礼物图片
+        giftPanelControl.init(null);//这里如果为null则加载本地礼物图片
         giftPanelControl.setGiftListener(new GiftPanelControl.GiftListener() {
             @Override
             public void getGiftInfo(String giftPic, String giftName, String giftPrice) {
